@@ -118,8 +118,6 @@ class MuseScore : public QMainWindow, public MuseScoreCore {
       QSettings settings;
       ScoreView* cv                        { 0 };
       ScoreState _sstate;
-      UpdateChecker* ucheck;
-
       static const std::list<const char*> _allNoteInputMenuEntries;
       static const std::list<const char*> _basicNoteInputMenuEntries;
       static const std::list<const char*> _advancedNoteInputMenuEntries;
@@ -137,17 +135,6 @@ class MuseScore : public QMainWindow, public MuseScoreCore {
       MagBox* mag;
       QComboBox* viewModeCombo;
 
-      QAction* pref;
-      QAction* onlineHandbookAction;
-      QAction* aboutAction;
-      QAction* aboutQtAction;
-      QAction* aboutMusicXMLAction;
-      QAction* checkForUpdateAction        { 0 };
-      QAction* askForHelpAction;
-      QAction* reportBugAction;
-      QAction* revertToFactoryAction;
-
-      QProgressBar* _progressBar           { 0 };
       PreferenceDialog* preferenceDialog   { 0 };
       TextTools* _textTools                { 0 };
       PianoTools* _pianoTools              { 0 };
@@ -179,7 +166,6 @@ class MuseScore : public QMainWindow, public MuseScoreCore {
       PaletteScrollArea* keyPalette        { 0 };
       KeyEditor* keyEditor                 { 0 };
       ChordStyleEditor* chordStyleEditor   { 0 };
-      QStatusBar* _statusBar;
       QLabel* _modeText;
       QLabel* _positionLabel;
       NewWizard* newWizard           { 0 };
@@ -200,7 +186,6 @@ class MuseScore : public QMainWindow, public MuseScoreCore {
       void createMenuEntry(PluginDescription*);
       void removeMenuEntry(PluginDescription*);
 
-      QTimer* autoSaveTimer;
       QList<QAction*> pluginActions;
       QSignalMapper* pluginMapper        { 0 };
 
@@ -321,7 +306,6 @@ class MuseScore : public QMainWindow, public MuseScoreCore {
 
    private slots:
       void cmd(QAction* a, const QString& cmd);
-      void autoSaveTimerTimeout();
       void helpBrowser1() const;
       void resetAndRestart();
       void about();

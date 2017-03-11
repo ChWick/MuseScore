@@ -454,7 +454,6 @@ void MuseScore::preferencesChanged()
             }
 
       getAction("midi-on")->setEnabled(preferences.enableMidiInput);
-      _statusBar->setVisible(preferences.showStatusBar);
 
       delete newWizard;
       newWizard = 0;
@@ -505,8 +504,6 @@ MuseScore::MuseScore()
       setWindowTitle(QString(MUSESCORE_NAME_VERSION));
       setIconSize(QSize(preferences.iconWidth * guiScaling, preferences.iconHeight * guiScaling));
 
-      ucheck = new UpdateChecker();
-
       setAcceptDrops(true);
       setFocusPolicy(Qt::NoFocus);
 
@@ -535,8 +532,6 @@ MuseScore::MuseScore()
       _modeText->setAutoFillBackground(false);
       _modeText->setObjectName("modeLabel");
 
-      _statusBar = new QStatusBar;
-
       hRasterAction   = getAction("hraster");
       vRasterAction   = getAction("vraster");
       loopAction      = getAction("loop");
@@ -546,26 +541,6 @@ MuseScore::MuseScore()
       countInAction   = getAction("countin");
       panAction       = getAction("pan");
 
-      _statusBar->addPermanentWidget(new QWidget(this), 2);
-      _statusBar->addPermanentWidget(new QWidget(this), 100);
-      _statusBar->addPermanentWidget(_modeText, 0);
-
-      if (enableExperimental) {
-            layerSwitch = new QComboBox(this);
-            layerSwitch->setToolTip(tr("Switch layer"));
-            connect(layerSwitch, SIGNAL(activated(const QString&)), SLOT(switchLayer(const QString&)));
-            playMode = new QComboBox(this);
-            playMode->addItem(tr("Synthesizer"));
-            playMode->addItem(tr("Audio track"));
-            playMode->setToolTip(tr("Switch play mode"));
-            connect(playMode, SIGNAL(activated(int)), SLOT(switchPlayMode(int)));
-
-            _statusBar->addPermanentWidget(playMode);
-            _statusBar->addPermanentWidget(layerSwitch);
-            }
-      _statusBar->addPermanentWidget(_positionLabel, 0);
-
-      setStatusBar(_statusBar);
       ScoreAccessibility::createInstance(this);
 
       // otherwise unused actions:
@@ -703,9 +678,6 @@ MuseScore::MuseScore()
       QClipboard* cb = QApplication::clipboard();
       connect(cb, SIGNAL(dataChanged()), SLOT(clipboardChanged()));
       connect(cb, SIGNAL(selectionChanged()), SLOT(clipboardChanged()));
-      autoSaveTimer = new QTimer(this);
-      autoSaveTimer->setSingleShot(true);
-      connect(autoSaveTimer, SIGNAL(timeout()), this, SLOT(autoSaveTimerTimeout()));
       initOsc();
       startAutoSave();
 
@@ -746,16 +718,6 @@ void MuseScore::retranslate(bool firstStart)
       {
       _positionLabel->setToolTip(tr("Measure:Beat:Tick"));
 
-      aboutAction->setText(tr("&About..."));
-      aboutQtAction->setText(tr("About &Qt..."));
-      aboutMusicXMLAction->setText(tr("About &MusicXML..."));
-      onlineHandbookAction->setText(tr("&Online Handbook"));
-      if (checkForUpdateAction)
-            checkForUpdateAction->setText(tr("Check for &Update"));
-      askForHelpAction->setText(tr("Ask for Help"));
-      reportBugAction->setText(tr("Report a Bug"));
-      revertToFactoryAction->setText(tr("Revert to Factory Settings"));
-
       viewModeCombo->setAccessibleName(tr("View Mode"));
       viewModeCombo->setItemText(viewModeCombo->findData(int(LayoutMode::PAGE)), tr("Page View"));
       viewModeCombo->setItemText(viewModeCombo->findData(int(LayoutMode::LINE)), tr("Continuous View"));
@@ -786,12 +748,6 @@ void MuseScore::resizeEvent(QResizeEvent*)
 
 void MuseScore::startAutoSave()
       {
-      if (preferences.autoSave) {
-            int t = preferences.autoSaveTime * 60 * 1000;
-            autoSaveTimer->start(t);
-            }
-      else
-            autoSaveTimer->stop();
       }
 
 //---------------------------------------------------------
@@ -1237,7 +1193,6 @@ void MuseScore::updateViewModeCombo()
 
 void MuseScore::showMessage(const QString& s, int timeout)
       {
-      _statusBar->showMessage(s, timeout);
       }
 
 //---------------------------------------------------------
@@ -2283,9 +2238,6 @@ bool MuseScore::eventFilter(QObject *obj, QEvent *event)
 
 bool MuseScore::hasToCheckForUpdate()
       {
-      if (ucheck)
-            return ucheck->hasToCheck();
-      else
           return false;
       }
 
@@ -2295,8 +2247,6 @@ bool MuseScore::hasToCheckForUpdate()
 
 void MuseScore::checkForUpdate()
       {
-      if (ucheck)
-            ucheck->check(version(), sender() != 0);
       }
 
 //---------------------------------------------------------
@@ -3022,11 +2972,6 @@ void MuseScore::undoRedo(bool undo)
 
 QProgressBar* MuseScore::showProgressBar()
       {
-      if (_progressBar == 0)
-            _progressBar = new QProgressBar(this);
-      _statusBar->addWidget(_progressBar);
-      _progressBar->show();
-      return _progressBar;
       }
 
 //---------------------------------------------------------
@@ -3035,8 +2980,6 @@ QProgressBar* MuseScore::showProgressBar()
 
 void MuseScore::hideProgressBar()
       {
-      if (_progressBar)
-            _statusBar->removeWidget(_progressBar);
       }
 
 //---------------------------------------------------------
@@ -3192,47 +3135,6 @@ void MuseScore::removeSessionFile()
             return;
       if (!f.remove()) {
             qDebug("cannot remove session file <%s>", qPrintable(f.fileName()));
-            }
-      }
-
-//---------------------------------------------------------
-//   autoSaveTimerTimeout
-//---------------------------------------------------------
-
-void MuseScore::autoSaveTimerTimeout()
-      {
-      bool sessionChanged = false;
-      foreach (MasterScore* s, scoreList) {
-            if (s->autosaveDirty()) {
-                  QString tmp = s->tmpName();
-                  if (!tmp.isEmpty()) {
-                        QFileInfo fi(tmp);
-                        // TODO: cannot catch exeption here:
-                        s->saveCompressedFile(fi, false);
-                        }
-                  else {
-                        QDir dir;
-                        dir.mkpath(dataPath);
-                        QTemporaryFile tf(dataPath + "/scXXXXXX.mscz");
-                        tf.setAutoRemove(false);
-                        if (!tf.open()) {
-                              qDebug("autoSaveTimerTimeout(): create temporary file failed");
-                              return;
-                              }
-                        s->setTmpName(tf.fileName());
-                        QFileInfo info(tf.fileName());
-                        s->saveCompressedFile(&tf, info, false);
-                        tf.close();
-                        sessionChanged = true;
-                        }
-                  s->setAutosaveDirty(false);
-                  }
-            }
-      if (sessionChanged)
-            writeSessionFile(false);
-      if (preferences.autoSave) {
-            int t = preferences.autoSaveTime * 60 * 1000;
-            autoSaveTimer->start(t);
             }
       }
 
@@ -4075,7 +3977,6 @@ void MuseScore::cmd(QAction* a, const QString& cmd)
             showMasterPalette(qApp->translate("MasterPalette", "Symbols"));
       else if (cmd == "toggle-statusbar") {
             preferences.showStatusBar = a->isChecked();
-            _statusBar->setVisible(preferences.showStatusBar);
             preferences.write();
             }
       else if (cmd == "append-measures")
