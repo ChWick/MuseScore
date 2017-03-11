@@ -58,6 +58,7 @@ namespace Ms {
 
 void MuseScore::registerPlugin(PluginDescription* plugin)
       {
+#ifndef MS_SIMPLE_VIEWER
       QString pluginPath = plugin->path;
       QFileInfo np(pluginPath);
       if (np.suffix() != "qml")
@@ -120,10 +121,12 @@ void MuseScore::registerPlugin(PluginDescription* plugin)
       pluginMapper->setMapping(a, pluginIdx);
 
       delete obj;
+#endif
       }
 
 void MuseScore::unregisterPlugin(PluginDescription* plugin)
       {
+#ifndef MS_SIMPLE_VIEWER
       QString pluginPath = plugin->path;
       QFileInfo np(pluginPath);
       if (np.suffix() != "qml")
@@ -152,6 +155,7 @@ void MuseScore::unregisterPlugin(PluginDescription* plugin)
 
       disconnect(a, SIGNAL(triggered()), pluginMapper, SLOT(map()));
       pluginMapper->removeMappings(a);
+#endif
 
       }
 
@@ -160,6 +164,7 @@ void MuseScore::unregisterPlugin(PluginDescription* plugin)
 //    syntax: "entry.entry.entry"
 //---------------------------------------------------------
 
+#ifndef MS_SIMPLE_VIEWER
 void MuseScore::createMenuEntry(PluginDescription* plugin)
       {
       if (!pluginMapper)
@@ -315,12 +320,13 @@ void MuseScore::removeMenuEntry(PluginDescription* plugin)
             cm = menu;
             }
       }
-
+#endif
 //---------------------------------------------------------
 //   pluginIdxFromPath
 //---------------------------------------------------------
 
 int MuseScore::pluginIdxFromPath(QString pluginPath) {
+#ifndef MS_SIMPLE_VIEWER
       QFileInfo np(pluginPath);
       QString baseName = np.completeBaseName();
       int idx = 0;
@@ -330,6 +336,7 @@ int MuseScore::pluginIdxFromPath(QString pluginPath) {
                   return idx;
             idx++;
             }
+#endif
       return -1;
       }
 
@@ -339,6 +346,7 @@ int MuseScore::pluginIdxFromPath(QString pluginPath) {
 
 void MuseScore::loadPlugins()
       {
+#ifndef MS_SIMPLE_VIEWER
       pluginMapper = new QSignalMapper(this);
       connect(pluginMapper, SIGNAL(mapped(int)), SLOT(pluginTriggered(int)));
       for (int i = 0; i < preferences.pluginList.size(); ++i) {
@@ -346,6 +354,7 @@ void MuseScore::loadPlugins()
             if (d->load)
                   registerPlugin(d);
             }
+#endif
       }
 
 //---------------------------------------------------------
@@ -354,9 +363,11 @@ void MuseScore::loadPlugins()
 
 void MuseScore::unloadPlugins()
       {
+#ifndef MS_SIMPLE_VIEWER
       for (int idx = 0; idx < plugins.size() ; idx++) {
             ; // TODO
             }
+#endif
       }
 
 //---------------------------------------------------------
@@ -365,6 +376,7 @@ void MuseScore::unloadPlugins()
 
 bool MuseScore::loadPlugin(const QString& filename)
       {
+#ifndef MS_SIMPLE_VIEWER
       bool result = false;
 
       if (!pluginMapper) {
@@ -389,6 +401,9 @@ bool MuseScore::loadPlugin(const QString& filename)
                   }
             }
       return result;
+#else
+    return false;
+#endif
       }
 
 //---------------------------------------------------------
@@ -397,6 +412,7 @@ bool MuseScore::loadPlugin(const QString& filename)
 
 void MuseScore::pluginTriggered(int idx)
       {
+#ifndef MS_SIMPLE_VIEWER
       QString pp = plugins[idx];
 
       QQmlEngine* engine = Ms::MScore::qml();
@@ -460,6 +476,7 @@ void MuseScore::pluginTriggered(int idx)
       if (cs && p->pluginType() != "dock")
             cs->endCmd();
 //      endCmd();
+#endif
       }
 
 //---------------------------------------------------------

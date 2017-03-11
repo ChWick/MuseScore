@@ -72,6 +72,7 @@ void ChordStyleEditor::setScore(Score* s)
 
 void MuseScore::editChordStyle()
       {
+#ifndef MS_SIMPLE_VIEWER
       if (chordStyleEditor == 0) {
             chordStyleEditor = new ChordStyleEditor(0);
             chordStyleEditor->restore();
@@ -79,6 +80,7 @@ void MuseScore::editChordStyle()
       chordStyleEditor->setScore(cs);
       chordStyleEditor->show();
       chordStyleEditor->raise();
+#endif
       }
 
 //---------------------------------------------------------

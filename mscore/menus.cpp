@@ -1266,12 +1266,14 @@ Palette* MuseScore::newLinesPalette(PaletteType t)
 
 void MuseScore::showPalette(bool visible)
       {
+#ifndef MS_SIMPLE_VIEWER
       QAction* a = getAction("toggle-palette");
       if (paletteBox == 0)
             Workspace::currentWorkspace->read();
       if (paletteBox)   // read failed?
             paletteBox->setVisible(visible);
       a->setChecked(visible);
+#endif
       }
 
 //---------------------------------------------------------
@@ -1516,6 +1518,7 @@ Palette* MuseScore::newFretboardDiagramPalette()
 
 void MuseScore::setAdvancedPalette()
       {
+#ifndef MS_SIMPLE_VIEWER
       mscore->getPaletteBox();
       paletteBox->clear();
       paletteBox->addPalette(newClefsPalette(PaletteType::ADVANCED));
@@ -1543,6 +1546,7 @@ void MuseScore::setAdvancedPalette()
       paletteBox->addPalette(newBreaksPalette());
       paletteBox->addPalette(newFramePalette());
       paletteBox->addPalette(newBeamPalette(PaletteType::ADVANCED));
+#endif
       }
 
 //---------------------------------------------------------
@@ -1551,6 +1555,7 @@ void MuseScore::setAdvancedPalette()
 
 void MuseScore::setBasicPalette()
       {
+#ifndef MS_SIMPLE_VIEWER
       mscore->getPaletteBox();
       paletteBox->clear();
       paletteBox->addPalette(newClefsPalette(PaletteType::BASIC));
@@ -1567,6 +1572,7 @@ void MuseScore::setBasicPalette()
       paletteBox->addPalette(newRepeatsPalette());
       paletteBox->addPalette(newBreaksPalette());
       paletteBox->addPalette(newBeamPalette(PaletteType::BASIC));
+#endif
       }
 
 //---------------------------------------------------------

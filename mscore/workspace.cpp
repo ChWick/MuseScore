@@ -62,6 +62,7 @@ void MuseScore::undoWorkspace()
 
 void MuseScore::showWorkspaceMenu()
       {
+#ifndef MS_SIMPLE_VIEWER
       if (workspaces == 0) {
             workspaces = new QActionGroup(this);
             workspaces->setExclusive(true);
@@ -96,6 +97,7 @@ void MuseScore::showWorkspaceMenu()
       a->setDisabled(Workspace::currentWorkspace->readOnly());
       connect(a, SIGNAL(triggered()), SLOT(undoWorkspace()));
       menuWorkspaces->addAction(a);
+#endif
       }
 
 //---------------------------------------------------------
@@ -339,6 +341,8 @@ extern QString readRootFile(MQZipReader*, QList<QString>&);
 
 void Workspace::read()
       {
+#ifdef MS_NO_PALETTES
+#else
       if (_path == "Advanced") {
             mscore->setAdvancedPalette();
             for (Palette* p : mscore->getPaletteBox()->palettes())
@@ -360,6 +364,7 @@ void Workspace::read()
             mscore->setAdvancedPalette();       // set default palette
             return;
             }
+#endif
       QFileInfo fi(_path);
       _readOnly = !fi.isWritable();
 

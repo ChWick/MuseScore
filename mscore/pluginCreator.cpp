@@ -258,6 +258,7 @@ void PluginCreator::closeEvent(QCloseEvent* ev)
 
 static void qmlMsgHandler(QtMsgType type, const QMessageLogContext &, const QString & msg)
       {
+#ifndef MS_SIMPLE_VIEWER
       QString s;
       switch(type) {
             case QtDebugMsg:
@@ -277,6 +278,7 @@ static void qmlMsgHandler(QtMsgType type, const QMessageLogContext &, const QStr
                   break;
             }
       mscore->pluginCreator()->msg(s);
+#endif
       }
 
 //---------------------------------------------------------

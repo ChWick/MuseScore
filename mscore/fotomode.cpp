@@ -451,8 +451,10 @@ void ScoreView::doFotoDragEdit(QMouseEvent* ev)
       updateGrips();
       data.startMove = p;
       _score->update();
+#ifndef MS_SIMPLE_VIEWER
       if (mscore->inspector())
             mscore->inspector()->setElement(_foto);
+#endif
       }
 
 //---------------------------------------------------------
@@ -548,8 +550,10 @@ void ScoreView::doDragFotoRect(QMouseEvent* ev)
       data.startMove = p;
       updateGrips();
       _score->update();
+#ifndef MS_SIMPLE_VIEWER
       if (mscore->inspector())
             mscore->inspector()->setElement(_foto);
+#endif
       }
 
 //---------------------------------------------------------

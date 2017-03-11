@@ -196,6 +196,7 @@ ScoreAccessibility* ScoreAccessibility::instance()
 
 void ScoreAccessibility::updateAccessibilityInfo()
       {
+#ifndef MS_SIMPLE_VIEWER
       ScoreView* w = static_cast<MuseScore*>(mainWindow)->currentScoreView();
       if (!w) return;
 
@@ -220,6 +221,7 @@ void ScoreAccessibility::updateAccessibilityInfo()
       QObject* obj = static_cast<QObject*>(w);
       QAccessibleValueChangeEvent ev(obj, w->score()->accessibleInfo());
       QAccessible::updateAccessibility(&ev);
+#endif
       }
 
 std::pair<int, float> ScoreAccessibility::barbeat(Element *e)

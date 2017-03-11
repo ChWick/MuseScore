@@ -390,6 +390,7 @@ void Mixer::midiPrefsChanged(bool showMidiControls)
 
 void MuseScore::showMixer(bool val)
       {
+#ifndef MS_SIMPLE_VIEWER
       QAction* a = getAction("toggle-mixer");
       if (mixer == 0) {
             mixer = new Mixer(this);
@@ -401,6 +402,7 @@ void MuseScore::showMixer(bool val)
             }
       mixer->updateAll(cs->masterScore());
       mixer->setVisible(val);
+#endif
       }
 
 //---------------------------------------------------------

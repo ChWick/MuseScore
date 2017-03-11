@@ -180,6 +180,7 @@ void SelectionWindow::changeCheckbox(QListWidgetItem* item)
 
 void MuseScore::showSelectionWindow(bool val)
       {
+#ifndef MS_SIMPLE_VIEWER
       QAction* a = getAction("toggle-selection-window");
       if (selectionWindow == 0) {
             selectionWindow = new SelectionWindow(this,this->currentScore());
@@ -193,6 +194,7 @@ void MuseScore::showSelectionWindow(bool val)
       if (val) {
             selectionWindow->raise();
             }
+#endif
       }
 void SelectionWindow::closeEvent(QCloseEvent* ev)
       {

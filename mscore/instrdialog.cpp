@@ -174,6 +174,7 @@ void MuseScore::editInstrList()
       {
       if (cs == 0)
             return;
+#ifndef MS_SIMPLE_VIEWER
       if (!instrList)
             instrList = new InstrumentsDialog(this);
       else if (instrList->isVisible()) {
@@ -504,6 +505,7 @@ void MuseScore::editInstrList()
       masterScore->endCmd();
       masterScore->rebuildMidiMapping();
       seq->initInstruments();
+#endif
       }
 
 }

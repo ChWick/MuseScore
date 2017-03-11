@@ -561,6 +561,7 @@ void Preferences::read()
 
 void MuseScore::startPreferenceDialog()
       {
+#ifndef MS_SIMPLE_VIEWER
       if (!preferenceDialog) {
             preferenceDialog = new PreferenceDialog(this);
             connect(preferenceDialog, SIGNAL(preferencesChanged()),
@@ -570,6 +571,7 @@ void MuseScore::startPreferenceDialog()
             }
       preferenceDialog->setPreferences(preferences);
       preferenceDialog->show();
+#endif
       }
 
 //---------------------------------------------------------

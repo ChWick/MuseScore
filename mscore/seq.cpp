@@ -402,9 +402,11 @@ void Seq::unmarkNotes()
             cs->addRefresh(n->canvasBoundingRect());
             }
       markedNotes.clear();
+#ifndef MS_SIMPLE_VIEWER
       PianoTools* piano = mscore->pianoTools();
       if (piano && piano->isVisible())
             piano->heartBeat(markedNotes);
+#endif
       }
 
 //---------------------------------------------------------
@@ -452,6 +454,7 @@ void Seq::seqMessage(int msg, int arg)
             case '2':
                   guiStop();
 //                  heartBeatTimer->stop();
+#ifndef MS_SIMPLE_VIEWER
                   if (_driver && mscore->getSynthControl()) {
                         meterValue[0]     = .0f;
                         meterValue[1]     = .0f;
@@ -461,10 +464,12 @@ void Seq::seqMessage(int msg, int arg)
                         peakTimer[1]       = 0;
                         mscore->getSynthControl()->setMeter(0.0, 0.0, 0.0, 0.0);
                         }
+#endif
                   seek(0);
                   break;
             case '0':         // STOP
                   guiStop();
+#ifndef MS_SIMPLE_VIEWER
 //                  heartBeatTimer->stop();
                   if (_driver && mscore->getSynthControl()) {
                         meterValue[0]     = .0f;
@@ -475,6 +480,7 @@ void Seq::seqMessage(int msg, int arg)
                         peakTimer[1]       = 0;
                         mscore->getSynthControl()->setMeter(0.0, 0.0, 0.0, 0.0);
                         }
+#endif
                   break;
 
             case '1':         // PLAY
@@ -1418,6 +1424,7 @@ void Seq::putEvent(const NPlayEvent& event, unsigned framePos)
 
 void Seq::heartBeatTimeout()
       {
+#ifndef MS_SIMPLE_VIEWER
       SynthControl* sc = mscore->getSynthControl();
       if (sc && _driver) {
             if (++peakTimer[0] >= peakHold)
@@ -1504,6 +1511,7 @@ void Seq::heartBeatTimeout()
             piano->heartBeat(markedNotes);
 
       cv->update(cv->toPhysical(r));
+#endif
       }
 
 //---------------------------------------------------------

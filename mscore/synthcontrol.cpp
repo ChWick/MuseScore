@@ -155,6 +155,7 @@ void SynthControl::keyPressEvent(QKeyEvent* ev) {
 
 void MuseScore::showSynthControl(bool val)
       {
+#ifndef MS_SIMPLE_VIEWER
       QAction* a = getAction("synth-control");
       if (synthControl == 0) {
             synthControl = new SynthControl(this);
@@ -168,6 +169,7 @@ void MuseScore::showSynthControl(bool val)
             connect(synthControl, SIGNAL(metronomeGainChanged(float)), seq, SLOT(setMetronomeGain(float)));
             }
       synthControl->setVisible(val);
+#endif
       }
 
 //---------------------------------------------------------

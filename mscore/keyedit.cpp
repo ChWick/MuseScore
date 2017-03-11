@@ -377,11 +377,13 @@ void KeyEditor::save()
 
 void MuseScore::showKeyEditor()
       {
+#ifndef MS_SIMPLE_VIEWER
       if (keyEditor == 0) {
             keyEditor = new KeyEditor(0);
             }
       keyEditor->show();
       keyEditor->raise();
+#endif
       }
 }
 

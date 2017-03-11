@@ -54,6 +54,7 @@ extern QMap<QString, QStringList>* smuflRanges();
 
 void MuseScore::showMasterPalette(const QString& s)
       {
+#ifndef MS_SIMPLE_VIEWER
       QAction* a = getAction("masterpalette");
 
       if (masterPalette == 0) {
@@ -76,6 +77,7 @@ void MuseScore::showMasterPalette(const QString& s)
       masterPalette->setVisible(a->isChecked());
       if (!s.isEmpty())
             masterPalette->selectItem(s);
+#endif
       }
 
 //---------------------------------------------------------

@@ -7,6 +7,9 @@ PRECOMPILED_HEADER = $$PWD/../all.h
 
 QT += xml xmlpatterns concurrent svg quick quickwidgets help
 
+# main window modifications
+DEFINES += MS_SIMPLE_VIEWER
+
 LIBS_OUT = $$OUT_PWD/..
 LIBS += -Wl,--start-group
 LIBS += -L$$LIBS_OUT/libmscore -lmscore_core
@@ -166,7 +169,6 @@ SOURCES += \
     mixer.cpp \
     mscorePlugins.cpp \
     musedata.cpp \
-    musescore.cpp \
     musicxmlfonthandler.cpp \
     musicxmlsupport.cpp \
     navigator.cpp \
@@ -239,6 +241,11 @@ SOURCES += \
 #    pulseaudio.cpp \
 #    omrpanel.cpp \
 #    webpage.cpp \
+
+#    musescore.cpp \
+
+SOURCES += \
+    musescoreviewer.cpp \
 
 HEADERS += \
     abstractdialog.h \
@@ -366,6 +373,7 @@ HEADERS += \
     mixer.h \
     musedata.h \
     musescore.h \
+    musescoreviewer.h \
     musicxmlfonthandler.h \
     musicxml.h \
     musicxmlsupport.h \

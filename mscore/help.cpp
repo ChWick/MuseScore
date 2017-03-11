@@ -148,6 +148,7 @@ void HelpQuery::returnPressed()
 
 void MuseScore::showHelp(const QUrl& url)
       {
+#ifndef MS_SIMPLE_VIEWER
       qDebug("showHelp <%s>", qPrintable(url.toString()));
 
       if (!_helpEngine)
@@ -169,6 +170,7 @@ void MuseScore::showHelp(const QUrl& url)
             }
       manualDock->show();
       helpBrowser->setContent(url);
+#endif
       }
 
 void MuseScore::showHelp(QString s)

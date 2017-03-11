@@ -71,6 +71,7 @@ namespace Ms {
 
 void MuseScore::showInspector(bool visible)
       {
+#ifndef MS_SIMPLE_VIEWER
       QAction* a = getAction("inspector");
       if (!_inspector) {
             _inspector = new Inspector();
@@ -81,6 +82,7 @@ void MuseScore::showInspector(bool visible)
             _inspector->setVisible(visible);
       if (visible)
             updateInspector();
+#endif
       }
 
 //---------------------------------------------------------

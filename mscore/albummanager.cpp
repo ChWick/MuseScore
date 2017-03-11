@@ -237,6 +237,7 @@ void AlbumManager::itemChanged(QListWidgetItem* item)
 
 void MuseScore::showAlbumManager()
       {
+#ifndef MS_SIMPLE_VIEWER
       if (albumManager == 0)
             albumManager = new AlbumManager(this);
       albumManager->setAlbum(currentScoreView()->score()->masterScore()->movements());
@@ -244,6 +245,7 @@ void MuseScore::showAlbumManager()
 
       // focus on album name on opening the Album Manager
       //albumManager->albumName->setFocus();
+#endif
       }
 
 //---------------------------------------------------------

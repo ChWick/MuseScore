@@ -18,9 +18,10 @@
 //  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //=============================================================================
 
-#ifndef __MUSESCORE_H__
-#define __MUSESCORE_H__
+#ifndef __MUSESCOREVIEWER_H__
+#define __MUSESCOREVIEWER_H__
 
+#include "musescore.h"
 #include "config.h"
 #include "globals.h"
 #include "ui_measuresdialog.h"
@@ -34,7 +35,6 @@
 #include "libmscore/musescoreCore.h"
 #include "libmscore/score.h"
 #include "newwizard.h"
-
 
 namespace Ms {
 
@@ -104,118 +104,10 @@ enum class IconType : signed char;
 enum class MagIdx : char;
 
 
-enum class PaletteType { MASTER, ADVANCED, BASIC };
 
 extern QString mscoreGlobalShare;
-static const int PROJECT_LIST_LEN = 6;
 extern const char* voiceActions[];
 
-//---------------------------------------------------------
-//   IconActions
-//---------------------------------------------------------
-
-struct IconAction {
-      IconType subtype;
-      const char* action;
-      };
-
-//---------------------------------------------------------
-//   LanguageItem
-//---------------------------------------------------------
-
-struct LanguageItem {
-      QString key;
-      QString name;
-      QString handbook;
-      LanguageItem(const QString k, const QString n) {
-            key = k;
-            name = n;
-            handbook = QString::null;
-            }
-      LanguageItem(const QString k, const QString n, const QString h) {
-            key = k;
-            name = n;
-            handbook = h;
-            }
-      };
-
-//---------------------------------------------------------
-//   AboutBoxDialog
-//---------------------------------------------------------
-
-class AboutBoxDialog : public QDialog, Ui::AboutBox {
-      Q_OBJECT
-
-   public:
-      AboutBoxDialog();
-
-   private slots:
-      void copyRevisionToClipboard();
-      };
-
-//---------------------------------------------------------
-//   AboutMusicXMLBoxDialog
-//---------------------------------------------------------
-
-class AboutMusicXMLBoxDialog : public QDialog, Ui::AboutMusicXMLBox {
-      Q_OBJECT
-
-   public:
-      AboutMusicXMLBoxDialog();
-      };
-
-//---------------------------------------------------------
-//   InsertMeasuresDialog
-//   Added by DK, 05.08.07
-//---------------------------------------------------------
-
-class InsertMeasuresDialog : public QDialog, public Ui::InsertMeasuresDialogBase {
-      Q_OBJECT
-
-      virtual void hideEvent(QHideEvent*);
-
-   private slots:
-      virtual void accept();
-
-   public:
-      InsertMeasuresDialog(QWidget* parent = 0);
-      };
-
-//---------------------------------------------------------
-//   MeasuresDialog
-//---------------------------------------------------------
-
-class MeasuresDialog : public QDialog, public Ui::MeasuresDialogBase {
-      Q_OBJECT
-
-   private slots:
-      virtual void accept();
-
-   public:
-      MeasuresDialog(QWidget* parent = 0);
-      };
-
-
-//---------------------------------------------------------
-//   MuseScoreApplication (mac only)
-//---------------------------------------------------------
-
-class MuseScoreApplication : public QtSingleApplication {
-   public:
-      QStringList paths;
-      MuseScoreApplication(const QString &id, int &argc, char **argv)
-         : QtSingleApplication(id, argc, argv) {
-            };
-      virtual bool event(QEvent *ev) override;
-      };
-
-
-#ifdef MS_SIMPLE_VIEWER
-}
-#include "musescoreviewer.h"
-namespace Ms {
-#endif
-#ifndef MS_SIMPLE_VIEWER
 //---------------------------------------------------------
 //   MuseScore
 //---------------------------------------------------------
@@ -244,7 +136,6 @@ class MuseScore : public QMainWindow, public MuseScoreCore {
 
       MagBox* mag;
       QComboBox* viewModeCombo;
-      QAction* playId;
 
       QAction* pref;
       QAction* onlineHandbookAction;
@@ -258,16 +149,10 @@ class MuseScore : public QMainWindow, public MuseScoreCore {
 
       QProgressBar* _progressBar           { 0 };
       PreferenceDialog* preferenceDialog   { 0 };
-      QToolBar* cpitchTools;
-      QToolBar* fotoTools;
-      QToolBar* fileTools;
-      QToolBar* transportTools;
-      QToolBar* entryTools;
       TextTools* _textTools                { 0 };
       PianoTools* _pianoTools              { 0 };
       MediaDialog* _mediaDialog            { 0 };
       DrumTools* _drumTools                { 0 };
-      QToolBar* voiceTools;
       InstrumentsDialog* instrList         { 0 };
       MeasuresDialog* measuresDialog       { 0 };
       InsertMeasuresDialog* insertMeasuresDialog { 0 };
@@ -276,28 +161,6 @@ class MuseScore : public QMainWindow, public MuseScoreCore {
       PluginManager* pluginManager         { 0 };
       SelectionWindow* selectionWindow     { 0 };
 
-      QMenu* menuFile;
-      QMenu* openRecent;
-      QMenu* menuEdit;
-      QMenu* menuView;
-      QMenu* menuToolbars;
-      QMenu* menuWorkspaces;
-
-      QMenu* menuAdd;
-      QMenu* menuAddMeasures;
-      QMenu* menuAddFrames;
-      QMenu* menuAddText;
-      QMenu* menuAddLines;
-      QMenu* menuAddPitch;
-      QMenu* menuAddInterval;
-      QMenu* menuTuplet;
-
-      QMenu* menuFormat;
-      QMenu* menuTools;
-      QMenu* menuVoices;
-
-      QMenu* menuPlugins;
-      QMenu* menuHelp;
       AlbumManager* albumManager           { 0 };
 
       QWidget* _searchDialog               { 0 };
@@ -656,7 +519,6 @@ class MuseScore : public QMainWindow, public MuseScoreCore {
       void addImage(Score*, Element*);
 
       bool savePng(Score*, const QString& name, bool screenshot, bool transparent, double convDpi, int trimMargin, QImage::Format format);
-      bool saveAudio(Score*, QIODevice *device, std::function<bool(float)> updateProgress = nullptr);
       bool saveAudio(Score*, const QString& name);
       bool saveMp3(Score*, const QString& name);
       bool saveSvg(Score*, const QString& name);
@@ -759,7 +621,6 @@ class MuseScore : public QMainWindow, public MuseScoreCore {
       };
 
 extern MuseScore* mscore;
-#endif
 extern QStringList recentScores;
 extern QString dataPath;
 extern MasterSynthesizer* synti;

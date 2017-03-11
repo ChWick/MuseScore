@@ -478,6 +478,9 @@ QString MuseScore::createDefaultName() const
 
 MasterScore* MuseScore::getNewFile()
       {
+#ifdef MS_SIMPLE_VIEWER
+    return new MasterScore();
+#else
       if (!newWizard)
             newWizard = new NewWizard(this);
       else
@@ -760,6 +763,7 @@ MasterScore* MuseScore::getNewFile()
             }
       score->setExcerptsChanged(true);
       return score;
+#endif
       }
 
 //---------------------------------------------------------
