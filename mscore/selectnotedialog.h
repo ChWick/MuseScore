@@ -26,6 +26,8 @@
 namespace Ms {
 
 struct NotePattern;
+class Note;
+class NotePattern;
 
 //---------------------------------------------------------
 //   SelectNoteDialog

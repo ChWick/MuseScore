@@ -13,6 +13,8 @@
 #ifndef __CURSOR_H__
 #define __CURSOR_H__
 
+#include "segment.h"
+
 namespace Ms {
 
 class Element;
@@ -25,6 +27,7 @@ class RepeatSegment;
 class ChordRest;
 class StaffText;
 class Measure;
+class ScoreElement;
 
 //---------------------------------------------------------
 //   ElementW

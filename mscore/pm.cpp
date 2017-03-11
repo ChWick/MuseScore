@@ -23,7 +23,7 @@
   #include <mmsystem.h>
 #endif
 
-#if defined(Q_OS_MAC) || defined(Q_OS_WIN)
+#if defined(Q_OS_MAC) || defined(Q_OS_WIN) || defined(Q_OS_ANDROID)
   #include "portmidi/porttime/porttime.h"
 #else
   #include <porttime.h>

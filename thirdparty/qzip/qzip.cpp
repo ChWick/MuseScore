@@ -45,6 +45,11 @@
 #include "qzipreader_p.h"
 #include "qzipwriter_p.h"
 
+#include <QDir>
+#include <QFileInfo>
+#include <QDebug>
+#include <QtEndian>
+
 #include <zlib.h>
 
 #if defined(Q_OS_WIN) or defined(Q_OS_ANDROID)
@@ -77,6 +82,7 @@
 #  define S_IWOTH 0002
 #  define S_IXOTH 0001
 #else
+#include <sys/stat.h>
 // #  ifndef S_IFDIR
 // #    define S_IFDIR 0040000
 // #  endif

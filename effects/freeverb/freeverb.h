@@ -13,6 +13,8 @@
 
 #include "effects/effect.h"
 
+namespace Ms {
+
 static const int numcombs = 8;
 static const int numallpasses = 4;
 
@@ -101,5 +103,7 @@ class Freeverb : public Effect {
       virtual EffectGui* gui();
       virtual const std::vector<ParDescr>& parDescr() const;
       };
+
+}  // namespace Ms
 
 #endif

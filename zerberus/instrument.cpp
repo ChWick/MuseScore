@@ -17,7 +17,9 @@
 #include <QStringList>
 
 #include "libmscore/xml.h"
+#ifdef HAS_AUDIOFILE
 #include "audiofile/audiofile.h"
+#endif
 #include "thirdparty/qzip/qzipreader_p.h"
 
 #include "instrument.h"
@@ -60,6 +62,10 @@ Sample* ZInstrument::readSample(const QString& s, MQZipReader* uz)
             buf = f.readAll();
             }
 
+#ifndef HAS_AUDIOFILE
+      printf("No audiofile support");
+#else
+      return 0;
       AudioFile a;
       if (!a.open(buf)) {
             printf("open <%s> failed: %s\n", qPrintable(s), a.error());
@@ -87,6 +93,7 @@ Sample* ZInstrument::readSample(const QString& s, MQZipReader* uz)
             data[(frames-2) * channel + i] = data[(frames-3) * channel + i];
             }
       return sa;
+#endif
       }
 
 //---------------------------------------------------------

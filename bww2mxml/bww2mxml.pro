@@ -21,11 +21,9 @@
 
 QT -= gui
 TARGET = bww2mxml
-CONFIG += console
-CONFIG -= app_bundle
-TEMPLATE = app
+TEMPLATE = lib
+CONFIG += staticlib
 SOURCES += lexer.cpp \
-    main.cpp \
     mxmlwriter.cpp \
     parser.cpp \
     symbols.cpp \

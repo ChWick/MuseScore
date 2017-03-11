@@ -13,6 +13,8 @@
 #include "freeverb.h"
 #include "effects/effectgui.h"
 
+namespace Ms {
+
 //---------------------------------------------------------
 //   gui
 //---------------------------------------------------------
@@ -24,4 +26,6 @@ EffectGui* Freeverb::gui()
       eg->init(url);
       return eg;
       }
+
+}  // namespace
 

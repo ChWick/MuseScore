@@ -12,6 +12,7 @@
 
 #include "dsp.h"
 
+namespace Ms {
 Dsp* dsp;
 
 #ifdef __i386__
@@ -104,3 +105,5 @@ void initDsp()
 #endif
       dsp = new Dsp();
       }
+
+}  // namespace Ms

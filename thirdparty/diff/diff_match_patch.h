@@ -23,6 +23,11 @@
 #define DIFF_MATCH_PATCH_H
 
 #include <ctime>
+#include <QtCore>
+#include <QString>
+#include <QList>
+#include <QMap>
+#include <QVariant>
 
 /*
  * Functions for diff, match and patch.

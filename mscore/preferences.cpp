@@ -1952,6 +1952,7 @@ void Preferences::updatePluginList()
 
 void PreferenceDialog::printShortcutsClicked()
       {
+#ifdef QT_PRINTSUPPORT_LIB
       QPrinter printer(QPrinter::HighResolution);
       const MStyle& s = MScore::defaultStyle();
       qreal pageW = s.value(StyleIdx::pageWidth).toReal();
@@ -2014,5 +2015,8 @@ void PreferenceDialog::printShortcutsClicked()
             item = shortcutList->itemBelow(item);
             }
       p.end();
+#else
+    qDebug() << "No printer support.";
+#endif
       }
 }

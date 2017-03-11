@@ -109,7 +109,7 @@
 #include "startcenter.h"
 #include "help.h"
 #include "awl/aslider.h"
-
+#include <QLoggingCategory>
 #ifdef AEOLUS
 extern Ms::Synthesizer* createAeolus();
 #endif
@@ -5334,6 +5334,7 @@ using namespace Ms;
 //   main
 //---------------------------------------------------------
 
+#if 0
 int main(int argc, char* av[])
       {
 #ifndef NDEBUG
@@ -5591,6 +5592,8 @@ int main(int argc, char* av[])
       MScore::init();         // initialize libmscore
 
       // initialize current page size from default printer
+#ifdef QT_PRINTSUPPORT_LIB
+
       if (!MScore::testMode) {
             QPrinter p;
             if (p.isValid()) {
@@ -5600,6 +5603,7 @@ int main(int argc, char* av[])
                   MScore::defaultStyle().set(StyleIdx::pagePrintableWidth, psf.width()-20.0/INCH);
                   }
             }
+#endif
 
 #ifdef SCRIPT_INTERFACE
       qmlRegisterType<QmlPlugin>  ("MuseScore", 1, 0, "MuseScore");
@@ -5877,4 +5881,4 @@ int main(int argc, char* av[])
 
       return qApp->exec();
       }
-
+#endif

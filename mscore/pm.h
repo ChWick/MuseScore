@@ -24,7 +24,7 @@
 #include "config.h"
 #include "mididriver.h"
 
-#if defined(Q_OS_MAC) || defined(Q_OS_WIN)
+#if defined(Q_OS_MAC) || defined(Q_OS_WIN) || defined(Q_OS_ANDROID)
   #include "portmidi/pm_common/portmidi.h"
 #else
   #include <portmidi.h>

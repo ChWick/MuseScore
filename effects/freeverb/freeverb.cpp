@@ -11,6 +11,8 @@
 #include "stdio.h"
 #include "freeverb.h"
 
+namespace Ms {
+
 #define DC_OFFSET 1e-8
 
 
@@ -274,3 +276,4 @@ const std::vector<ParDescr>& Freeverb::parDescr() const
       return freeverbPd;
       }
 
+}  // namespace Ms

@@ -44,7 +44,9 @@
 
 #ifndef Q_OS_WIN
 // no precompiled QtWebEngine in Qt 5.6 windows gcc
+#ifdef QT_WEBENGINEWIDGETS_LIB
 #include <QWebEngineView>
+#endif
 #endif
 
 #include <QtXml>
@@ -94,14 +96,16 @@
 #include <QToolBar>
 #include <QTreeWidget>
 #include <QFileDialog>
+#ifdef QT_PRINTSUPPORT_LIB
 #include <QPrintDialog>
+#include <QPrinter>
+#endif
 #include <QColorDialog>
 #include <QDockWidget>
 #include <QStackedWidget>
 #include <QStackedLayout>
 #include <QListWidget>
 #include <QMessageBox>
-#include <QPrinter>
 #include <QComboBox>
 #include <QMainWindow>
 #include <QMenu>

@@ -781,6 +781,7 @@ bool ScoreView::saveFotoAs(bool printMode, const QRectF& r)
 
       double pr = MScore::pixelRatio;
       if (ext == "pdf") {
+#if QT_PRINTSUPPORT_LIB
             QPrinter printer(QPrinter::HighResolution);
             mag = printer.logicalDpiX() / DPI;
             printer.setPaperSize(QSizeF(r.width() * mag, r.height() * mag) , QPrinter::DevicePixel);
@@ -794,6 +795,9 @@ bool ScoreView::saveFotoAs(bool printMode, const QRectF& r)
             MScore::pixelRatio = DPI / printer.logicalDpiX();
             QPainter p(&printer);
             paintRect(printMode, p, r, mag);
+#else
+          qDebug("No printer support");
+#endif
             }
       else if (ext == "svg") {
             // note that clipping is not implemented

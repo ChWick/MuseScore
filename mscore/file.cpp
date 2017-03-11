@@ -1508,6 +1508,7 @@ QString MuseScore::getDrumsetFilename(bool open)
 
 void MuseScore::printFile()
       {
+#ifdef QT_PRINTSUPPORT_LIB
       LayoutMode layoutMode = cs->layoutMode();
       if (layoutMode != LayoutMode::PAGE) {
             cs->setLayoutMode(LayoutMode::PAGE);
@@ -1583,6 +1584,9 @@ void MuseScore::printFile()
             cs->setLayoutMode(layoutMode);
             cs->doLayout();
             }
+#else
+    qDebug() << "No printer support.";
+#endif
       }
 
 //---------------------------------------------------------
@@ -1593,7 +1597,9 @@ void MuseScore::printFile()
 void MuseScore::exportFile()
       {
       QStringList fl;
+#ifdef QT_PRINTSUPPORT_LIB
       fl.append(tr("PDF File") + " (*.pdf)");
+#endif
       fl.append(tr("PNG Bitmap Graphic") + " (*.png)");
       fl.append(tr("Scalable Vector Graphics") + " (*.svg)");
 #ifdef HAS_AUDIOFILE
@@ -1985,6 +1991,7 @@ bool MuseScore::savePdf(Score* cs, const QString& saveName)
 
 bool MuseScore::savePdf(QList<Score*> cs, const QString& saveName)
       {
+#ifdef QT_PRINTSUPPORT_LIB
       if (cs.empty())
             return false;
       Score* firstScore = cs[0];
@@ -2061,6 +2068,9 @@ bool MuseScore::savePdf(QList<Score*> cs, const QString& saveName)
       p.end();
       MScore::pdfPrinting = false;
       MScore::pixelRatio = pr;
+#else
+    qDebug() << "No print support.";
+#endif
       return true;
       }
 

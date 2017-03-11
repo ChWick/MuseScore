@@ -47,6 +47,8 @@
 #include <stdexcept>
 #include <fstream>
 #include <string>
+#include <QString>
+#include <QDebug>
 
 QString rtf2html(const QString& iString)
       {
