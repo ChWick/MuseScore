@@ -13,7 +13,6 @@ DEFINES += MS_SIMPLE_VIEWER
 LIBS_OUT = $$OUT_PWD/..
 LIBS += -Wl,--start-group
 LIBS += -L$$LIBS_OUT/libmscore -lmscore_core
-LIBS += -L$$LIBS_OUT/mstyle -lmstyle
 LIBS += -L$$LIBS_OUT/zerberus -lzerberus
 LIBS += -L$$LIBS_OUT/effects -leffects
 LIBS += -L$$LIBS_OUT/fluid -lfluid

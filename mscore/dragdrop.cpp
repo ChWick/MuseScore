@@ -463,151 +463,10 @@ printf("drop\n");
       dropData.modifiers  = event->keyboardModifiers();
 
       if (dragElement) {
-            bool applyUserOffset = false;
-            dragElement->styleChanged();
-            _score->startCmd();
-            Q_ASSERT(dragElement->score() == score());
-            _score->addRefresh(dragElement->canvasBoundingRect());
-            switch (dragElement->type()) {
-                  case ElementType::VOLTA:
-                  case ElementType::OTTAVA:
-                  case ElementType::TRILL:
-                  case ElementType::PEDAL:
-                  case ElementType::HAIRPIN:
-                  case ElementType::TEXTLINE:
-                        {
-                        Spanner* spanner = static_cast<Spanner*>(dragElement);
-                        score()->cmdAddSpanner(spanner, pos);
-                        score()->setUpdateAll();
-                        event->acceptProposedAction();
-                        }
-                        break;
-                  case ElementType::SYMBOL:
-                  case ElementType::IMAGE:
-                        applyUserOffset = true;
-                        // fall-thru
-                  case ElementType::DYNAMIC:
-                  case ElementType::FRET_DIAGRAM:
-                  case ElementType::HARMONY:
-                        {
-                        Element* el = elementAt(pos);
-                        if (el == 0 || el->type() == ElementType::MEASURE) {
-                              int staffIdx;
-                              Segment* seg;
-                              QPointF offset;
-                              el = _score->pos2measure(pos, &staffIdx, 0, &seg, &offset);
-                              if (el && el->type() == ElementType::MEASURE) {
-                                    dragElement->setTrack(staffIdx * VOICES);
-                                    dragElement->setParent(seg);
-                                    if (applyUserOffset)
-                                          dragElement->setUserOff(offset);
-                                    score()->undoAddElement(dragElement);
-                                    }
-                              else {
-                                    qDebug("cannot drop here");
-                                    delete dragElement;
-                                    }
-                              }
-                        else {
-                              _score->addRefresh(el->canvasBoundingRect());
-                              _score->addRefresh(dragElement->canvasBoundingRect());
-
-                              if (!el->acceptDrop(dropData)) {
-                                    qDebug("drop %s onto %s not accepted", dragElement->name(), el->name());
-                                    break;
-                                    }
-                              Element* dropElement = el->drop(dropData);
-                              _score->addRefresh(el->canvasBoundingRect());
-                              if (dropElement) {
-                                    _score->select(dropElement, SelectType::SINGLE, 0);
-                                    _score->addRefresh(dropElement->canvasBoundingRect());
-                                    }
-                              }
-                        }
-                        event->acceptProposedAction();
-                        break;
-                  case ElementType::KEYSIG:
-                  case ElementType::CLEF:
-                  case ElementType::TIMESIG:
-                  case ElementType::BAR_LINE:
-                  case ElementType::ARPEGGIO:
-                  case ElementType::BREATH:
-                  case ElementType::GLISSANDO:
-                  case ElementType::BRACKET:
-                  case ElementType::ARTICULATION:
-                  case ElementType::CHORDLINE:
-                  case ElementType::BEND:
-                  case ElementType::ACCIDENTAL:
-                  case ElementType::TEXT:
-                  case ElementType::FINGERING:
-                  case ElementType::TEMPO_TEXT:
-                  case ElementType::STAFF_TEXT:
-                  case ElementType::SYSTEM_TEXT:
-                  case ElementType::NOTEHEAD:
-                  case ElementType::TREMOLO:
-                  case ElementType::LAYOUT_BREAK:
-                  case ElementType::MARKER:
-                  case ElementType::STAFF_STATE:
-                  case ElementType::INSTRUMENT_CHANGE:
-                  case ElementType::REHEARSAL_MARK:
-                  case ElementType::JUMP:
-                  case ElementType::REPEAT_MEASURE:
-                  case ElementType::ICON:
-                  case ElementType::NOTE:
-                  case ElementType::CHORD:
-                  case ElementType::SPACER:
-                  case ElementType::SLUR:
-                  case ElementType::BAGPIPE_EMBELLISHMENT:
-                  case ElementType::AMBITUS:
-                  case ElementType::TREMOLOBAR:
-                  case ElementType::FIGURED_BASS:
-                  case ElementType::LYRICS:
-                  case ElementType::STAFFTYPE_CHANGE:
-                        {
-                        Element* el = 0;
-                        for (const Element* e : elementsAt(pos)) {
-                              if (e->acceptDrop(dropData)) {
-                                    el = const_cast<Element*>(e);
-                                    break;
-                                    }
-                              }
-                        if (!el) {
-                              if (!dropCanvas(dragElement)) {
-                                    qDebug("cannot drop %s(%p) to canvas", dragElement->name(), dragElement);
-                                    delete dragElement;
-                                    }
-                              break;
-                              }
-                        _score->addRefresh(el->canvasBoundingRect());
-
-                        // HACK ALERT!
-                        if (el->isMeasure() && dragElement->isLayoutBreak()) {
-                              Measure* m = toMeasure(el);
-                              if (m->isMMRest())
-                                    el = m->mmRestLast();
-                              }
-
-                        Element* dropElement = el->drop(dropData);
-                        _score->addRefresh(el->canvasBoundingRect());
-                        if (dropElement) {
-                              if (!_score->noteEntryMode())
-                                    _score->select(dropElement, SelectType::SINGLE, 0);
-                              _score->addRefresh(dropElement->canvasBoundingRect());
-                              }
-                        event->acceptProposedAction();
-                        }
-                        break;
-                  default:
-                        delete dragElement;
-                        break;
-                  }
-            dragElement = 0;
-            setDropTarget(0); // this also resets dropRectangle and dropAnchor
-            score()->endCmd();
-            // update input cursor position (must be done after layout)
-            if (noteEntryMode())
-                  moveCursor();
-            return;
+           if (handleDropData(dropData)) {
+                event->acceptProposedAction();
+           }
+           return;
             }
 
       if (event->mimeData()->hasUrls()) {
@@ -725,6 +584,163 @@ printf("drop url\n");
             }
       setDropTarget(0); // this also resets dropRectangle and dropAnchor
       }
+
+
+bool ScoreView::handleDropData(const DropData &dropData) {
+    bool accept = true;
+    Element* dragElement = dropData.element;
+    auto pos = dropData.pos;
+    if (!dragElement) {
+        qDebug() << "Empty drag element";
+        return false;
+    }
+
+    bool applyUserOffset = false;
+    dragElement->styleChanged();
+    _score->startCmd();
+    Q_ASSERT(dragElement->score() == score());
+    _score->addRefresh(dragElement->canvasBoundingRect());
+    switch (dragElement->type()) {
+          case ElementType::VOLTA:
+          case ElementType::OTTAVA:
+          case ElementType::TRILL:
+          case ElementType::PEDAL:
+          case ElementType::HAIRPIN:
+          case ElementType::TEXTLINE:
+                {
+                Spanner* spanner = static_cast<Spanner*>(dragElement);
+                score()->cmdAddSpanner(spanner, pos);
+                score()->setUpdateAll();
+                }
+                break;
+          case ElementType::SYMBOL:
+          case ElementType::IMAGE:
+                applyUserOffset = true;
+                // fall-thru
+          case ElementType::DYNAMIC:
+          case ElementType::FRET_DIAGRAM:
+          case ElementType::HARMONY:
+                {
+                Element* el = elementAt(pos);
+                if (el == 0 || el->type() == ElementType::MEASURE) {
+                      int staffIdx;
+                      Segment* seg;
+                      QPointF offset;
+                      el = _score->pos2measure(pos, &staffIdx, 0, &seg, &offset);
+                      if (el && el->type() == ElementType::MEASURE) {
+                            dragElement->setTrack(staffIdx * VOICES);
+                            dragElement->setParent(seg);
+                            if (applyUserOffset)
+                                  dragElement->setUserOff(offset);
+                            score()->undoAddElement(dragElement);
+                            }
+                      else {
+                            qDebug("cannot drop here");
+                            delete dragElement;
+                            }
+                      }
+                else {
+                      _score->addRefresh(el->canvasBoundingRect());
+                      _score->addRefresh(dragElement->canvasBoundingRect());
+
+                      if (!el->acceptDrop(dropData)) {
+                            qDebug("drop %s onto %s not accepted", dragElement->name(), el->name());
+                            accept = false;
+                            break;
+                            }
+                      Element* dropElement = el->drop(dropData);
+                      _score->addRefresh(el->canvasBoundingRect());
+                      if (dropElement) {
+                            _score->select(dropElement, SelectType::SINGLE, 0);
+                            _score->addRefresh(dropElement->canvasBoundingRect());
+                            }
+                      }
+                }
+                break;
+          case ElementType::KEYSIG:
+          case ElementType::CLEF:
+          case ElementType::TIMESIG:
+          case ElementType::BAR_LINE:
+          case ElementType::ARPEGGIO:
+          case ElementType::BREATH:
+          case ElementType::GLISSANDO:
+          case ElementType::BRACKET:
+          case ElementType::ARTICULATION:
+          case ElementType::CHORDLINE:
+          case ElementType::BEND:
+          case ElementType::ACCIDENTAL:
+          case ElementType::TEXT:
+          case ElementType::FINGERING:
+          case ElementType::TEMPO_TEXT:
+          case ElementType::STAFF_TEXT:
+          case ElementType::SYSTEM_TEXT:
+          case ElementType::NOTEHEAD:
+          case ElementType::TREMOLO:
+          case ElementType::LAYOUT_BREAK:
+          case ElementType::MARKER:
+          case ElementType::STAFF_STATE:
+          case ElementType::INSTRUMENT_CHANGE:
+          case ElementType::REHEARSAL_MARK:
+          case ElementType::JUMP:
+          case ElementType::REPEAT_MEASURE:
+          case ElementType::ICON:
+          case ElementType::NOTE:
+          case ElementType::CHORD:
+          case ElementType::SPACER:
+          case ElementType::SLUR:
+          case ElementType::BAGPIPE_EMBELLISHMENT:
+          case ElementType::AMBITUS:
+          case ElementType::TREMOLOBAR:
+          case ElementType::FIGURED_BASS:
+          case ElementType::LYRICS:
+          case ElementType::STAFFTYPE_CHANGE:
+                {
+                Element* el = 0;
+                for (const Element* e : elementsAt(pos)) {
+                      if (e->acceptDrop(dropData)) {
+                            el = const_cast<Element*>(e);
+                            break;
+                            }
+                      }
+                if (!el) {
+                      if (!dropCanvas(dragElement)) {
+                            qDebug("cannot drop %s(%p) to canvas", dragElement->name(), dragElement);
+                            delete dragElement;
+                            }
+                            accept = false;
+                      break;
+                      }
+                _score->addRefresh(el->canvasBoundingRect());
+
+                // HACK ALERT!
+                if (el->isMeasure() && dragElement->isLayoutBreak()) {
+                      Measure* m = toMeasure(el);
+                      if (m->isMMRest())
+                            el = m->mmRestLast();
+                      }
+
+                Element* dropElement = el->drop(dropData);
+                _score->addRefresh(el->canvasBoundingRect());
+                if (dropElement) {
+                      if (!_score->noteEntryMode())
+                            _score->select(dropElement, SelectType::SINGLE, 0);
+                      _score->addRefresh(dropElement->canvasBoundingRect());
+                      }
+                }
+                break;
+          default:
+                delete dragElement;
+                break;
+          }
+    dragElement = 0;
+    setDropTarget(0); // this also resets dropRectangle and dropAnchor
+    score()->endCmd();
+    // update input cursor position (must be done after layout)
+    if (noteEntryMode())
+          moveCursor();
+
+    return accept;
+}
 
 //---------------------------------------------------------
 //   dragLeaveEvent

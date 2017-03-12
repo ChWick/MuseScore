@@ -43,7 +43,6 @@
 #include "zerberus/zerberus.h"
 #include "fluid/fluid.h"
 #include "pathlistdialog.h"
-#include "mstyle/mconfig.h"
 #include "resourceManager.h"
 #include "synthesizer/msynthesizer.h"
 
@@ -1534,7 +1533,6 @@ void PreferenceDialog::apply()
       prefs.globalStyle = MuseScoreStyleType(styleName->currentIndex());
 
       prefs.animations = animations->isChecked();
-      MgStyleConfigData::animationsEnabled = prefs.animations;
 
       if (languageChanged) {
             setMscoreLocale(prefs.language);

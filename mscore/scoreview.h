@@ -213,6 +213,7 @@ class ScoreView : public QWidget, public MuseScoreView {
       virtual void dragLeaveEvent(QDragLeaveEvent*);
       virtual void dragMoveEvent(QDragMoveEvent*);
       virtual void dropEvent(QDropEvent*);
+      bool handleDropData(const DropData &dropData);
       virtual void focusInEvent(QFocusEvent*);
       virtual void focusOutEvent(QFocusEvent*);
       virtual void mouseReleaseEvent(QMouseEvent*);
@@ -330,6 +331,8 @@ class ScoreView : public QWidget, public MuseScoreView {
       void viewRectChanged();
       void scaleChanged(double);
       void offsetChanged(double, double);
+      void enterClickElementState();
+      void exitClickElementState();
 
    public:
       ScoreView(QWidget* parent = 0);

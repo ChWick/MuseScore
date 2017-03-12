@@ -57,8 +57,6 @@
 #include "navigator.h"
 #include "importmidi/importmidi_panel.h"
 #include "libmscore/chord.h"
-#include "mstyle/mstyle.h"
-#include "mstyle/mconfig.h"
 #include "libmscore/segment.h"
 #include "editraster.h"
 #include "pianotools.h"
@@ -3963,6 +3961,9 @@ void MuseScore::cmd(QAction* a, const QString& cmd)
                   }
 #endif
             }
+      else if (cmd == "delete") {
+          if (cs) {cs->startCmd(); cs->cmdDeleteSelection(); cs->endCmd();}
+      }
       else if (cmd == "zoomin")
             incMag();
       else if (cmd == "zoomout")

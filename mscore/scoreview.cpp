@@ -3675,6 +3675,17 @@ bool ScoreView::mousePress(QMouseEvent* ev)
             if (dragStaffIdx < 0)
                   curElement = 0;
             }
+      else if (curElement && Ms::mscore->getClickInsertElement()) {
+          QPointF pos(imatrix.map(QPointF(ev->pos())));
+
+          DropData dropData;
+          dropData.view       = this;
+          dropData.pos        = pos;
+          dropData.dragOffset = QPointF();
+          dropData.element    = Ms::mscore->getClickInsertElement()->clone();
+          dropData.element->setScore(this->score());
+          handleDropData(dropData);
+      }
       return curElement != 0;
       }
 

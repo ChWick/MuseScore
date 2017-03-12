@@ -12,7 +12,6 @@ SOURCES += \
     colorlabel.cpp \
     denomspinbox.cpp \
     knob.cpp \
-    ltest.cpp \
     midipanknob.cpp \
     mslider.cpp \
     panknob.cpp \
