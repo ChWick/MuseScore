@@ -96,6 +96,7 @@ Palette::Palette(QWidget* parent)
       setSystemPalette(false);
       _moreElements = false;
       setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Ignored);
+      _showContextMenu = false;
       }
 
 Palette::~Palette()

@@ -133,7 +133,6 @@ class MuseScore : public QMainWindow, public MuseScoreCore {
       QSplitter* mainWindow;
 
       MagBox* mag;
-      QComboBox* viewModeCombo;
 
       PreferenceDialog* preferenceDialog   { 0 };
       TextTools* _textTools                { 0 };

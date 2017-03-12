@@ -645,17 +645,6 @@ MuseScore::MuseScore()
 
       mag = new MagBox;
       connect(mag, SIGNAL(magChanged(MagIdx)), SLOT(magChanged(MagIdx)));
-      viewModeCombo = new QComboBox(this);
-#if defined(Q_OS_MAC)
-      viewModeCombo->setFocusPolicy(Qt::StrongFocus);
-#else
-      viewModeCombo->setFocusPolicy(Qt::TabFocus);
-#endif
-      viewModeCombo->setFixedHeight(preferences.iconHeight + 8);  // hack
-      viewModeCombo->addItem("",       int(LayoutMode::PAGE));
-      viewModeCombo->addItem("", int(LayoutMode::LINE));
-      viewModeCombo->addItem("", int(LayoutMode::SYSTEM));
-      connect(viewModeCombo, SIGNAL(activated(int)), SLOT(switchLayoutMode(int)));
 
 
       a = getAction("startcenter");
@@ -717,11 +706,6 @@ void MuseScore::showError()
 void MuseScore::retranslate(bool firstStart)
       {
       _positionLabel->setToolTip(tr("Measure:Beat:Tick"));
-
-      viewModeCombo->setAccessibleName(tr("View Mode"));
-      viewModeCombo->setItemText(viewModeCombo->findData(int(LayoutMode::PAGE)), tr("Page View"));
-      viewModeCombo->setItemText(viewModeCombo->findData(int(LayoutMode::LINE)), tr("Continuous View"));
-      viewModeCombo->setItemText(viewModeCombo->findData(int(LayoutMode::SYSTEM)), tr("Single Page"));
 
       showMidiImportButton->setText(tr("Show MIDI import panel"));
 
@@ -1103,7 +1087,6 @@ void MuseScore::setCurrentScoreView(ScoreView* view)
                   }
             if (_inspector)
                   _inspector->setElement(0);
-            viewModeCombo->setEnabled(false);
             if (_textTools) {
                   _textTools->hide();
                   if (textPalette)
@@ -1116,9 +1099,6 @@ void MuseScore::setCurrentScoreView(ScoreView* view)
             changeState(STATE_DISABLED);
             return;
             }
-
-      viewModeCombo->setEnabled(true);
-      updateViewModeCombo();
 
       selectionChanged(cs->selection().state());
 
@@ -1168,23 +1148,6 @@ void MuseScore::setCurrentScoreView(ScoreView* view)
 
 void MuseScore::updateViewModeCombo()
       {
-      int idx;
-      switch (cs->layoutMode()) {
-            case LayoutMode::PAGE:
-            case LayoutMode::FLOAT:
-                  idx = 0;
-                  break;
-            case LayoutMode::LINE:
-                  idx = 1;
-                  break;
-            case LayoutMode::SYSTEM:
-                  idx = 2;
-                  break;
-            default:
-                  idx = 0;
-                  break;
-            }
-      viewModeCombo->setCurrentIndex(idx);
       }
 
 //---------------------------------------------------------
@@ -4382,7 +4345,6 @@ void MuseScore::switchLayoutMode(int val)
       {
       if (!cs)
             return;
-      switchLayoutMode(static_cast<LayoutMode>(viewModeCombo->itemData(val).toInt()));
       }
 
 void MuseScore::switchLayoutMode(LayoutMode mode)

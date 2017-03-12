@@ -669,7 +669,8 @@ ScoreView::ScoreView(QWidget* parent)
       _omrView    = 0;
       dropTarget  = 0;
 
-      setContextMenuPolicy(Qt::DefaultContextMenu);
+      //setContextMenuPolicy(Qt::DefaultContextMenu);
+      setContextMenuPolicy(Qt::NoContextMenu);
 
       double mag  = preferences.mag * (mscore->physicalDotsPerInch() / DPI);
       _matrix     = QTransform(mag, 0.0, 0.0, mag, 0.0, 0.0);
@@ -728,7 +729,7 @@ ScoreView::ScoreView(QWidget* parent)
 
       s = states[NORMAL];
       s->assignProperty(this, "cursor", QCursor(Qt::ArrowCursor));
-      s->addTransition(new ContextTransition(this));                          // context menu
+      //s->addTransition(new ContextTransition(this));                          // context menu
       EditTransition* et = new EditTransition(this, states[EDIT]);            // ->edit
       connect(et, SIGNAL(triggered()), SLOT(startEdit()));
       s->addTransition(et);
