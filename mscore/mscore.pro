@@ -8,7 +8,8 @@ PRECOMPILED_HEADER = $$PWD/../all.h
 QT += xml xmlpatterns concurrent svg quick quickwidgets help
 
 # main window modifications
-DEFINES += MS_SIMPLE_VIEWER
+#DEFINES += MS_SIMPLE_VIEWER
+
 
 LIBS_OUT = $$OUT_PWD/..
 LIBS += -Wl,--start-group
@@ -38,6 +39,8 @@ INCLUDEPATH += $$THIRDPARTYDIR/freetype/include
 INCLUDEPATH += $$THIRDPARTYDIR/vorbis
 INCLUDEPATH += $$THIRDPARTYDIR/ogg
 
+DEFINES += USE_ALSA
+LIBS += -lasound
 
 SOURCES += \
     abstractdialog.cpp \
@@ -165,6 +168,7 @@ SOURCES += \
     menus.cpp \
     metaedit.cpp \
     miconengine.cpp \
+    mididriver.cpp \
     mixer.cpp \
     mscorePlugins.cpp \
     musedata.cpp \
@@ -241,12 +245,13 @@ SOURCES += \
 #    omrpanel.cpp \
 #    webpage.cpp \
 
-#    musescore.cpp \
 
 SOURCES += \
-    musescoreviewer.cpp \
+    musescore.cpp \
+#    musescoreviewer.cpp \
 
 HEADERS += \
+    ../config.h \
     abstractdialog.h \
     accessibletoolbutton.h \
     albummanager.h \
@@ -372,7 +377,7 @@ HEADERS += \
     mixer.h \
     musedata.h \
     musescore.h \
-    musescoreviewer.h \
+    #musescoreviewer.h \
     musicxmlfonthandler.h \
     musicxml.h \
     musicxmlsupport.h \

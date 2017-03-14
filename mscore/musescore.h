@@ -406,6 +406,7 @@ class MuseScore : public QMainWindow, public MuseScoreCore {
 
       qreal _physicalDotsPerInch;
 
+      Element *clickInsertElement = nullptr;
       //---------------------
 
       virtual void closeEvent(QCloseEvent*);
@@ -529,6 +530,7 @@ class MuseScore : public QMainWindow, public MuseScoreCore {
       void createNewWorkspace();
       void changeWorkspace(Workspace* p);
       void mixerPreferencesChanged(bool showMidiControls);
+      void changeClickInsertElement(Element *e) {clickInsertElement = e;}
 
    public:
       MuseScore();
@@ -753,6 +755,8 @@ class MuseScore : public QMainWindow, public MuseScoreCore {
       void populateNoteInputMenu();
 
       void showError();
+
+      Element *getClickInsertElement() {return clickInsertElement;}
 
       static void saveGeometry(QWidget const*const qw);
       static void restoreGeometry(QWidget*const qw);

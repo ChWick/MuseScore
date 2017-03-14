@@ -57,8 +57,8 @@
 #include "navigator.h"
 #include "importmidi/importmidi_panel.h"
 #include "libmscore/chord.h"
-#include "mstyle/mstyle.h"
-#include "mstyle/mconfig.h"
+//#include "mstyle/mstyle.h"
+//#include "mstyle/mconfig.h"
 #include "libmscore/segment.h"
 #include "editraster.h"
 #include "pianotools.h"
@@ -133,7 +133,7 @@ bool enableExperimental = false;
 bool enableTestMode = false;
 
 QString dataPath;
-QString iconPath;
+QString iconPath = QString(":/data/icons/");
 
 bool converterMode = false;
 bool processJob = false;

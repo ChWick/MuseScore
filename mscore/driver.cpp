@@ -13,6 +13,7 @@
 #include "config.h"
 #include "preferences.h"
 #include "driver.h"
+#include "seq.h"
 
 #ifdef USE_JACK
 #include "jackaudio.h"
@@ -31,6 +32,22 @@ namespace Ms {
 #ifdef USE_PULSEAUDIO
 extern Driver* getPulseAudioDriver(Seq*);
 #endif
+
+class DummyDriver : public Driver {
+private:
+    Transport transport = Transport::STOP;
+public:
+    DummyDriver(Seq *s) : Driver(s) {}
+
+    virtual bool init(bool hot = false) {return true;}
+      virtual bool start(bool hotPlug = false) {return true;}
+      virtual bool stop() {return true;}
+      virtual void stopTransport() {transport = Transport::STOP;}
+      virtual void startTransport() {transport = Transport::PLAY;}
+      virtual Transport getState() {return transport;}
+      virtual int sampleRate() const {return 44100;}
+};
+
 
 //---------------------------------------------------------
 //   driverFactory
@@ -60,7 +77,11 @@ Driver* driverFactory(Seq* seq, QString driverName)
                   usePulseAudioFlag = true;
             else if (driverName == "portaudio")
                   usePortaudioFlag = true;
+              else if (driverName == "dummy") {
+                driver = new DummyDriver(seq);
+                return driver;
             }
+      }
 
       useALSA       = false;
       useJACK       = false;
