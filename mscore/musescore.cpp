@@ -110,6 +110,7 @@
 #include "startcenter.h"
 #include "help.h"
 #include "awl/aslider.h"
+#include "palettegroup.h"
 
 #ifdef AEOLUS
 extern Ms::Synthesizer* createAeolus();
@@ -561,6 +562,8 @@ MuseScore::MuseScore()
 
       setAcceptDrops(true);
       setFocusPolicy(Qt::NoFocus);
+
+      paletteGroup = new PaletteGroup(this);
 
       if (!converterMode && !pluginMode) {
             _loginManager = new LoginManager(this);
@@ -4193,7 +4196,7 @@ void MuseScore::showMediaDialog()
 PaletteBox* MuseScore::getPaletteBox()
       {
       if (paletteBox == 0) {
-            paletteBox = new PaletteBox(this);
+            paletteBox = new PaletteBox(paletteGroup, this);
             QAction* a = getAction("toggle-palette");
             connect(paletteBox, SIGNAL(visibilityChanged(bool)), a, SLOT(setChecked(bool)));
             addDockWidget(Qt::LeftDockWidgetArea, paletteBox);

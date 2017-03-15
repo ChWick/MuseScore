@@ -36,6 +36,7 @@
 #include "libmscore/note.h"
 #include "libmscore/tremolo.h"
 #include "libmscore/chordline.h"
+#include "palettegroup.h"
 
 #include "timedialog.h"
 
@@ -57,7 +58,7 @@ void MuseScore::showMasterPalette(const QString& s)
       QAction* a = getAction("masterpalette");
 
       if (masterPalette == 0) {
-            masterPalette = new MasterPalette(this);
+            masterPalette = new MasterPalette(paletteGroup, this);
             connect(masterPalette, SIGNAL(closed(bool)), a, SLOT(setChecked(bool)));
             mscore->stackUnder(masterPalette);
             }
@@ -85,6 +86,7 @@ void MuseScore::showMasterPalette(const QString& s)
 Palette* MasterPalette::createPalette(int w, int h, bool grid, double mag)
       {
       Palette* sp = new Palette;
+      paletteGroup->addPalette(sp);
       PaletteScrollArea* psa = new PaletteScrollArea(sp);
       psa->setRestrictHeight(false);
       sp->setMag(mag);
@@ -124,6 +126,7 @@ QString MasterPalette::selectedItem()
 
 void MasterPalette::addPalette(Palette* sp)
       {
+      paletteGroup->addPalette(sp);
       sp->setReadOnly(true);
       PaletteScrollArea* psa = new PaletteScrollArea(sp);
       psa->setRestrictHeight(false);
@@ -138,9 +141,11 @@ void MasterPalette::addPalette(Palette* sp)
 //   MasterPalette
 //---------------------------------------------------------
 
-MasterPalette::MasterPalette(QWidget* parent)
+MasterPalette::MasterPalette(PaletteGroup *parentPaletteGroup, QWidget* parent)
    : QWidget(parent, Qt::Dialog)
+   , paletteGroup(parentPaletteGroup)
       {
+      if (!paletteGroup) { paletteGroup = new PaletteGroup(this); }
       setObjectName("MasterPalette");
       setupUi(this);
       setWindowFlags(this->windowFlags() & ~Qt::WindowContextHelpButtonHint);

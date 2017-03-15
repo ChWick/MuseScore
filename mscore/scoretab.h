@@ -53,6 +53,9 @@ class ScoreTab : public QWidget {
       MuseScore* mainWindow;
       void clearTab2();
 
+   private:
+      void prepareScoreView(ScoreView *scoreView);
+
    signals:
       void currentScoreViewChanged(ScoreView*);
       void tabCloseRequested(int);

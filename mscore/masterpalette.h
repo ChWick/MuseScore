@@ -21,6 +21,7 @@ namespace Ms {
 class Palette;
 class TimeDialog;
 class KeyEditor;
+class PaletteGroup;
 
 //---------------------------------------------------------
 //   MasterPalette
@@ -35,6 +36,7 @@ class MasterPalette : public QWidget, Ui::MasterPalette
       QTreeWidgetItem* keyItem;
       QTreeWidgetItem* timeItem;
       QTreeWidgetItem* symbolItem;
+      PaletteGroup* paletteGroup;
 
       virtual void closeEvent(QCloseEvent*);
       Palette* createPalette(int w, int h, bool grid, double mag = 1.0);
@@ -52,7 +54,7 @@ class MasterPalette : public QWidget, Ui::MasterPalette
       void retranslate(bool firstTime = false);
 
    public:
-      MasterPalette(QWidget* parent = 0);
+      MasterPalette(PaletteGroup *parentPaletteGroup = 0, QWidget* parent = 0);
       void selectItem(const QString& s);
       QString selectedItem();
       };

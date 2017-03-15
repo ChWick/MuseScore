@@ -23,6 +23,7 @@
 #include "libmscore/score.h"
 #include "palette.h"
 #include "palettebox.h"
+#include "palettegroup.h"
 #include "libmscore/note.h"
 #include "libmscore/chordrest.h"
 #include "libmscore/dynamic.h"
@@ -245,6 +246,7 @@ Palette* MuseScore::newDynamicsPalette(PaletteType t)
 Palette* MuseScore::newKeySigPalette(PaletteType t)
       {
       Palette* sp = new Palette;
+      Ms::mscore->getPaletteGroup()->addPalette(sp);
       sp->setName(QT_TRANSLATE_NOOP("Palette", "Key Signatures"));
       sp->setMag(1.0);
       sp->setGrid(56, 55);
@@ -293,6 +295,7 @@ Palette* MuseScore::newKeySigPalette(PaletteType t)
 Palette* MuseScore::newAccidentalsPalette(PaletteType t)
       {
       Palette* sp = new Palette;
+      Ms::mscore->getPaletteGroup()->addPalette(sp);
       sp->setName(QT_TRANSLATE_NOOP("Palette", "Accidentals"));
       sp->setGrid(33, 36);
       sp->setDrawGrid(true);
@@ -373,6 +376,7 @@ Palette* MuseScore::newAccidentalsPalette(PaletteType t)
 Palette* MuseScore::newBarLinePalette(PaletteType t)
       {
       Palette* sp = new Palette;
+      Ms::mscore->getPaletteGroup()->addPalette(sp);
       sp->setName(QT_TRANSLATE_NOOP("Palette", "Barlines"));
       sp->setMag(0.8);
       sp->setGrid(42, 38);
@@ -420,6 +424,7 @@ Palette* MuseScore::newBarLinePalette(PaletteType t)
 Palette* MuseScore::newRepeatsPalette()
       {
       Palette* sp = new Palette;
+      Ms::mscore->getPaletteGroup()->addPalette(sp);
       sp->setName(QT_TRANSLATE_NOOP("Palette", "Repeats && Jumps"));
       sp->setMag(0.65);
       sp->setGrid(75, 28);
@@ -472,6 +477,7 @@ Palette* MuseScore::newBreaksPalette()
       {
       qreal _spatium = gscore->spatium();
       Palette* sp = new Palette;
+      Ms::mscore->getPaletteGroup()->addPalette(sp);
       sp->setName(QT_TRANSLATE_NOOP("Palette", "Breaks && Spacers"));
       sp->setMag(1.0);
       sp->setGrid(42, 36);
@@ -528,6 +534,7 @@ Palette* MuseScore::newBreaksPalette()
 Palette* MuseScore::newFingeringPalette()
       {
       Palette* sp = new Palette;
+      Ms::mscore->getPaletteGroup()->addPalette(sp);
       sp->setName(QT_TRANSLATE_NOOP("Palette", "Fingering"));
       sp->setMag(1.5);
       sp->setGrid(28, 30);
@@ -600,6 +607,7 @@ Palette* MuseScore::newTremoloPalette()
 Palette* MuseScore::newNoteHeadsPalette()
       {
       Palette* sp = new Palette;
+      Ms::mscore->getPaletteGroup()->addPalette(sp);
       sp->setName(QT_TRANSLATE_NOOP("Palette", "Noteheads"));
       sp->setMag(1.3);
       sp->setGrid(33, 36);
@@ -631,6 +639,7 @@ Palette* MuseScore::newNoteHeadsPalette()
 Palette* MuseScore::newArticulationsPalette(PaletteType t)
       {
       Palette* sp = new Palette;
+      Ms::mscore->getPaletteGroup()->addPalette(sp);
       sp->setName(QT_TRANSLATE_NOOP("Palette", "Articulations"));
       sp->setGrid(42, 25);
       sp->setDrawGrid(true);
@@ -735,6 +744,7 @@ Palette* MuseScore::newArticulationsPalette(PaletteType t)
 Palette* MuseScore::newOrnamentsPalette()
       {
       Palette* sp = new Palette;
+      Ms::mscore->getPaletteGroup()->addPalette(sp);
       sp->setName(QT_TRANSLATE_NOOP("Palette", "Ornaments"));
       sp->setGrid(42, 25);
       sp->setDrawGrid(true);
@@ -771,6 +781,7 @@ Palette* MuseScore::newOrnamentsPalette()
 Palette* MuseScore::newAccordionPalette()
       {
       Palette* sp = new Palette;
+      Ms::mscore->getPaletteGroup()->addPalette(sp);
       sp->setName(QT_TRANSLATE_NOOP("Palette", "Accordion"));
       sp->setGrid(42, 25);
       sp->setDrawGrid(true);
@@ -854,6 +865,7 @@ Palette* MuseScore::newAccordionPalette()
 Palette* MuseScore::newBracketsPalette()
       {
       Palette* sp = new Palette;
+      Ms::mscore->getPaletteGroup()->addPalette(sp);
       sp->setName(QT_TRANSLATE_NOOP("Palette", "Brackets"));
       sp->setMag(0.7);
       sp->setGrid(40, 60);
@@ -883,6 +895,7 @@ Palette* MuseScore::newBracketsPalette()
 Palette* MuseScore::newBreathPalette()
       {
       Palette* sp = new Palette();
+      Ms::mscore->getPaletteGroup()->addPalette(sp);
       sp->setName(QT_TRANSLATE_NOOP("Palette", "Breaths && Pauses"));
       sp->setGrid(42, 40);
       sp->setDrawGrid(true);
@@ -904,6 +917,7 @@ Palette* MuseScore::newBreathPalette()
 Palette* MuseScore::newArpeggioPalette()
       {
       Palette* sp = new Palette();
+      Ms::mscore->getPaletteGroup()->addPalette(sp);
       sp->setName(QT_TRANSLATE_NOOP("Palette", "Arpeggios && Glissandos"));
       sp->setGrid(27, 50);
       sp->setDrawGrid(true);
@@ -967,6 +981,7 @@ Palette* MuseScore::newArpeggioPalette()
 Palette* MuseScore::newClefsPalette(PaletteType t)
       {
       Palette* sp = new Palette;
+      Ms::mscore->getPaletteGroup()->addPalette(sp);
       sp->setName(QT_TRANSLATE_NOOP("Palette", "Clefs"));
       sp->setMag(0.8);
       sp->setGrid(35, 50);
@@ -1023,6 +1038,7 @@ Palette* MuseScore::newClefsPalette(PaletteType t)
 Palette* MuseScore::newGraceNotePalette(PaletteType t)
       {
       Palette* sp = new Palette;
+      Ms::mscore->getPaletteGroup()->addPalette(sp);
       sp->setName(QT_TRANSLATE_NOOP("Palette", "Grace Notes"));
       sp->setGrid(32, 40);
       sp->setDrawGrid(true);
@@ -1067,6 +1083,7 @@ Palette* MuseScore::newGraceNotePalette(PaletteType t)
 Palette* MuseScore::newBagpipeEmbellishmentPalette()
       {
       Palette* sp = new Palette;
+      Ms::mscore->getPaletteGroup()->addPalette(sp);
       sp->setName(QT_TRANSLATE_NOOP("Palette", "Bagpipe Embellishments"));
       sp->setMag(0.8);
       sp->setYOffset(2.0);
@@ -1087,6 +1104,7 @@ Palette* MuseScore::newBagpipeEmbellishmentPalette()
 Palette* MuseScore::newLinesPalette(PaletteType t)
       {
       Palette* sp = new Palette;
+      Ms::mscore->getPaletteGroup()->addPalette(sp);
       sp->setName(QT_TRANSLATE_NOOP("Palette", "Lines"));
       sp->setMag(.8);
       sp->setGrid(75, 28);
@@ -1308,6 +1326,7 @@ struct TempoPattern {
 Palette* MuseScore::newTempoPalette(PaletteType t)
       {
       Palette* sp = new Palette;
+      Ms::mscore->getPaletteGroup()->addPalette(sp);
       sp->setName(QT_TRANSLATE_NOOP("Palette", "Tempo"));
       sp->setMag(0.65);
       if (t == PaletteType::MASTER)
@@ -1380,6 +1399,7 @@ Palette* MuseScore::newTempoPalette(PaletteType t)
 Palette* MuseScore::newTextPalette()
       {
       Palette* sp = new Palette;
+      Ms::mscore->getPaletteGroup()->addPalette(sp);
       sp->setName(QT_TRANSLATE_NOOP("Palette", "Text"));
       sp->setMag(0.85);
       sp->setGrid(84, 28);
@@ -1446,6 +1466,7 @@ Palette* MuseScore::newTimePalette()
             };
 
       Palette* sp = new Palette;
+      Ms::mscore->getPaletteGroup()->addPalette(sp);
       sp->setName(QT_TRANSLATE_NOOP("Palette", "Time Signatures"));
       sp->setMag(.8);
       sp->setGrid(42, 38);
@@ -1466,6 +1487,7 @@ Palette* MuseScore::newTimePalette()
 Palette* MuseScore::newFretboardDiagramPalette()
       {
       Palette* sp = new Palette;
+      Ms::mscore->getPaletteGroup()->addPalette(sp);
       sp->setName(QT_TRANSLATE_NOOP("Palette", "Fretboard Diagrams"));
       sp->setGrid(42, 45);
       sp->setDrawGrid(true);

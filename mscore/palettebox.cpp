@@ -17,6 +17,7 @@
 #include "preferences.h"
 #include "libmscore/xml.h"
 #include "workspace.h"
+#include "palettegroup.h"
 
 namespace Ms {
 
@@ -24,9 +25,13 @@ namespace Ms {
 //   PaletteBox
 //---------------------------------------------------------
 
-PaletteBox::PaletteBox(QWidget* parent)
+PaletteBox::PaletteBox(PaletteGroup *targetPaletteGroup, QWidget* parent)
    : QDockWidget(tr("Palettes"), parent)
+   , paletteGroup(targetPaletteGroup)
       {
+      // if no global palette group specified, create a own
+      if (!paletteGroup) { paletteGroup = new PaletteGroup(nullptr); }
+
       setContextMenuPolicy(Qt::ActionsContextMenu);
       setObjectName("palette-box");
       setAllowedAreas(Qt::DockWidgetAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea));
@@ -202,6 +207,8 @@ void PaletteBox::addPalette(Palette* w)
       connect(b, SIGNAL(paletteCmd(PaletteCommand,int)), SLOT(paletteCmd(PaletteCommand,int)));
       connect(b, SIGNAL(closeAll()), SLOT(closeAll()));
       connect(w, SIGNAL(changed()), SIGNAL(changed()));
+
+      paletteGroup->addPalette(w);
       }
 
 //---------------------------------------------------------
@@ -220,6 +227,8 @@ Palette* PaletteBox::newPalette(const QString& name, int slot)
       connect(p, SIGNAL(changed()), Workspace::currentWorkspace, SLOT(setDirty()));
       for (int i = 0; i < (vbox->count() - 1) / 2; ++i)
             static_cast<PaletteBoxButton*>(vbox->itemAt(i * 2)->widget())->setId(i*2);
+
+      paletteGroup->addPalette(p);
       return p;
       }
 

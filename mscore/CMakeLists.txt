@@ -247,7 +247,7 @@ add_executable ( ${ExecutableName}
       editdrumset.cpp editstaff.cpp
       timesigproperties.cpp newwizard.cpp transposedialog.cpp
       excerptsdialog.cpp metaedit.cpp magbox.cpp
-      capella.cpp capxml.cpp exportaudio.cpp palettebox.cpp
+      capella.cpp capxml.cpp exportaudio.cpp palettebox.cpp palettegroup.cpp
       synthcontrol.cpp drumroll.cpp pianoroll.cpp piano.cpp
       pianoview.cpp drumview.cpp scoretab.cpp keyedit.cpp harmonyedit.cpp
       updatechecker.cpp

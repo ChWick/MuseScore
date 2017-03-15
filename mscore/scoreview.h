@@ -197,6 +197,12 @@ class ScoreView : public QWidget, public MuseScoreView {
       QPixmap* _bgPixmap;
       QPixmap* _fgPixmap;
 
+      /// If non zero, this element will be added as 'drop' to a newly
+      /// elected score element
+      /// Usually it should be linked a PaletteGroup.
+      const Element *elementToAddOnSelection { 0 };
+      bool insertSelectedElementOnSelection { false };
+
       virtual void paintEvent(QPaintEvent*);
       void paint(const QRect&, QPainter&);
 
@@ -213,6 +219,7 @@ class ScoreView : public QWidget, public MuseScoreView {
       virtual void dragLeaveEvent(QDragLeaveEvent*);
       virtual void dragMoveEvent(QDragMoveEvent*);
       virtual void dropEvent(QDropEvent*);
+      bool handleDropData(const DropData &dropData);
       virtual void focusInEvent(QFocusEvent*);
       virtual void focusOutEvent(QFocusEvent*);
       virtual void mouseReleaseEvent(QMouseEvent*);
@@ -325,6 +332,8 @@ class ScoreView : public QWidget, public MuseScoreView {
       void doFotoDragEdit(QMouseEvent* ev);
 
       void updateContinuousPanel();
+      void setElementToAddOnSelection(const Element *e) { elementToAddOnSelection = e; }
+      void setInsertSelectedElementOnSelection(bool b) { insertSelectedElementOnSelection = b; }
 
    signals:
       void viewRectChanged();

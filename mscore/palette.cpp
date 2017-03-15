@@ -90,7 +90,7 @@ Palette::Palette(QWidget* parent)
       _yOffset      = 0.0;
       setGrid(50, 60);
       _drawGrid     = false;
-      _selectable   = false;
+      _selectable   = true;
       setMouseTracking(true);
       setReadOnly(false);
       setSystemPalette(false);
@@ -290,6 +290,29 @@ Element* Palette::element(int idx)
       }
 
 //---------------------------------------------------------
+//   element
+//---------------------------------------------------------
+
+int Palette::idxOfElement(Element* element, bool compareType)
+      {
+      if (element == nullptr) { return -1 ; }
+      int idx = 0;
+      for (PaletteCell *cell : *ccp()) {
+          if (cell->element == nullptr) {
+              continue;
+          }
+          if (!compareType && cell->element == element) {
+              return idx;
+              }
+          else if (compareType && cell->element->mimeData(QPointF()) == element->mimeData(QPointF())) {
+              return idx;
+              }
+          ++idx;
+          }
+      return -1;
+      }
+
+//---------------------------------------------------------
 //   contentsMousePressEvent
 //---------------------------------------------------------
 
@@ -301,11 +324,16 @@ void Palette::mousePressEvent(QMouseEvent* ev)
       if (dragIdx == -1)
             return;
       if (_selectable) {
+            // delect if already selected
+            update(idxRect(dragIdx) | idxRect(selectedIdx));
             if (dragIdx != selectedIdx) {
-                  update(idxRect(dragIdx) | idxRect(selectedIdx));
                   selectedIdx = dragIdx;
                   }
-            emit boxClicked(dragIdx);
+            else {
+                  selectedIdx = -1;
+                  }
+
+            emit boxClicked(selectedIdx);
             }
       PaletteCell* cell = cellAt(dragIdx);
       if (cell && (cell->tag == "ShowMore"))
@@ -1440,6 +1468,28 @@ void Palette::actionToggled(bool /*val*/)
                   }
             }
       update();
+      }
+
+//---------------------------------------------------------
+//   globalSelectedElementChanged
+//---------------------------------------------------------
+
+void Palette::globalSelectedElementChanged(Element* e)
+      {
+      // no selection
+      if (selectedIdx < 0 && e == nullptr) {
+          return;
+      }
+
+      // something changed
+      if (selectedIdx >= 0) {
+          update(idxRect(selectedIdx));
+          }
+
+      selectedIdx = idxOfElement(e, true);
+      if (selectedIdx >= 0) {
+          update(idxRect(selectedIdx));
+          }
       }
 
 //---------------------------------------------------------

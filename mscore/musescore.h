@@ -97,6 +97,7 @@ class ImportMidiPanel;
 class Startcenter;
 class HelpBrowser;
 class ToolbarEditor;
+class PaletteGroup;
 
 struct PluginDescription;
 enum class SelState : char;
@@ -269,6 +270,7 @@ class MuseScore : public QMainWindow, public MuseScoreCore {
       PluginCreator* _pluginCreator        { 0 };
       PluginManager* pluginManager         { 0 };
       SelectionWindow* selectionWindow     { 0 };
+      PaletteGroup* paletteGroup           { 0 };
 
       QMenu* menuFile;
       QMenu* openRecent;
@@ -619,11 +621,11 @@ class MuseScore : public QMainWindow, public MuseScoreCore {
       QString getPluginFilename(bool open);
       QString getPaletteFilename(bool open, const QString& name = "");
       QString getWallpaper(const QString& caption);
-
       bool hRaster() const { return hRasterAction->isChecked(); }
       bool vRaster() const { return vRasterAction->isChecked(); }
 
       PaletteBox* getPaletteBox();
+      PaletteGroup *getPaletteGroup() const { return paletteGroup; }
       void disableCommands(bool val) { inChordEditor = val; }
 
       Tuplet* tupletDialog();

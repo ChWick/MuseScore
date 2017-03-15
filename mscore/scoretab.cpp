@@ -31,6 +31,7 @@
 #include "omr/omrview.h"
 #endif
 #include "libmscore/excerpt.h"
+#include "palettegroup.h"
 
 namespace Ms {
 
@@ -85,6 +86,16 @@ ScoreTab::~ScoreTab()
       {
 //      while (tab->count() > 0)
 //            tab->removeTab(0);
+      }
+
+//---------------------------------------------------------
+//   prepareScoreView
+//---------------------------------------------------------
+
+void ScoreTab::prepareScoreView(ScoreView *scoreView)
+      {
+      scoreView->setElementToAddOnSelection(mainWindow->getPaletteGroup()->selectedPaletteElement());
+      connect(mainWindow->getPaletteGroup(), &PaletteGroup::selectedPaletteElementChanged, scoreView, &ScoreView::setElementToAddOnSelection);
       }
 
 //---------------------------------------------------------
@@ -162,6 +173,7 @@ void ScoreTab::setCurrent(int n)
       if (!vs) {
             vs = new QSplitter;
             v  = new ScoreView;
+            prepareScoreView(v);
             tab2->blockSignals(true);
             tab2->setCurrentIndex(0);
             tab2->blockSignals(false);
@@ -295,6 +307,7 @@ void ScoreTab::setExcerpt(int n)
       if (!vs) {
             vs = new QSplitter;
             v  = new ScoreView;
+            prepareScoreView(v);
             vs->addWidget(v);
             v->setScore(score);
             stack->addWidget(vs);
@@ -401,6 +414,7 @@ void ScoreTab::initScoreView(int idx, double mag, MagIdx magIdx, double xoffset,
       ScoreView* v = view(idx);
       if (!v)  {
             v = new ScoreView;
+            prepareScoreView(v);
             Score* sc = scoreList->value(idx);
             if( sc != 0 )
                   v->setScore(sc);
