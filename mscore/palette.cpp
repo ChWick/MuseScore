@@ -301,10 +301,15 @@ void Palette::mousePressEvent(QMouseEvent* ev)
       if (dragIdx == -1)
             return;
       if (_selectable) {
+            // delect if already selected
+            update(idxRect(dragIdx) | idxRect(selectedIdx));
             if (dragIdx != selectedIdx) {
-                  update(idxRect(dragIdx) | idxRect(selectedIdx));
                   selectedIdx = dragIdx;
                   }
+            else {
+                  selectedIdx = -1;
+                  }
+
             emit boxClicked(dragIdx);
             }
       PaletteCell* cell = cellAt(dragIdx);
@@ -1441,6 +1446,17 @@ void Palette::actionToggled(bool /*val*/)
             }
       update();
       }
+
+//---------------------------------------------------------
+//   globalSelectedElementChanged
+//---------------------------------------------------------
+void Palette::globalSelectedElementChanged(Element* e)
+      {
+      if (selectedIdx >= 0 && element(selectedIdx) != e) {
+          update(idxRect(selectedIdx));
+          selectedIdx = -1;
+      }
+}
 
 //---------------------------------------------------------
 //   PaletteProperties

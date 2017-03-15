@@ -151,6 +151,9 @@ class Palette : public QWidget {
    private slots:
       void actionToggled(bool val);
 
+   public slots:
+      void globalSelectedElementChanged(Element*);
+
    signals:
       void boxClicked(int);
       void changed();

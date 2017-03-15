@@ -21,6 +21,7 @@ namespace Ms {
 class XmlWriter;
 class XmlReader;
 class Palette;
+class PaletteGroup;
 
 //---------------------------------------------------------
 //   PaletteBox
@@ -36,6 +37,7 @@ class PaletteBox : public QDockWidget {
       const int paletteStretch = 1000;
       QAction* singlePaletteAction;
       QToolButton* addWorkspaceButton;
+      PaletteGroup* paletteGroup;
 
    private slots:
       void paletteCmd(PaletteCommand, int);

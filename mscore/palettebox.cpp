@@ -13,6 +13,7 @@
 
 #include "palette.h"
 #include "palettebox.h"
+#include "palettegroup.h"
 #include "musescore.h"
 #include "preferences.h"
 #include "libmscore/xml.h"
@@ -27,6 +28,8 @@ namespace Ms {
 PaletteBox::PaletteBox(QWidget* parent)
    : QDockWidget(tr("Palettes"), parent)
       {
+      paletteGroup = new PaletteGroup(this);
+
       setContextMenuPolicy(Qt::ActionsContextMenu);
       setObjectName("palette-box");
       setAllowedAreas(Qt::DockWidgetAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea));
@@ -202,6 +205,8 @@ void PaletteBox::addPalette(Palette* w)
       connect(b, SIGNAL(paletteCmd(PaletteCommand,int)), SLOT(paletteCmd(PaletteCommand,int)));
       connect(b, SIGNAL(closeAll()), SLOT(closeAll()));
       connect(w, SIGNAL(changed()), SIGNAL(changed()));
+
+      paletteGroup->addPalette(w);
       }
 
 //---------------------------------------------------------
@@ -220,6 +225,8 @@ Palette* PaletteBox::newPalette(const QString& name, int slot)
       connect(p, SIGNAL(changed()), Workspace::currentWorkspace, SLOT(setDirty()));
       for (int i = 0; i < (vbox->count() - 1) / 2; ++i)
             static_cast<PaletteBoxButton*>(vbox->itemAt(i * 2)->widget())->setId(i*2);
+
+      paletteGroup->addPalette(p);
       return p;
       }
 
