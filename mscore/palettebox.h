@@ -55,7 +55,7 @@ class PaletteBox : public QDockWidget {
       void retranslate();
 
    public:
-      PaletteBox(QWidget* parent = 0);
+      PaletteBox(PaletteGroup* targetPaletteGroup = 0, QWidget* parent = 0);
       void addPalette(Palette*);
       void write(XmlWriter&);
       bool read(XmlReader&);

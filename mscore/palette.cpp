@@ -90,7 +90,7 @@ Palette::Palette(QWidget* parent)
       _yOffset      = 0.0;
       setGrid(50, 60);
       _drawGrid     = false;
-      _selectable   = false;
+      _selectable   = true;
       setMouseTracking(true);
       setReadOnly(false);
       setSystemPalette(false);
@@ -287,6 +287,26 @@ Element* Palette::element(int idx)
             return cellAt(idx)->element;
       else
             return 0;
+      }
+
+//---------------------------------------------------------
+//   element
+//---------------------------------------------------------
+
+int Palette::idxOfElement(Element* element, bool compareType)
+      {
+      if (element == nullptr) { return -1 ; }
+      int idx = 0;
+      for (PaletteCell *cell : *ccp()) {
+          if (compareType && cell->element == element) {
+              return idx;
+              }
+          else if (!compareType && cell->element->type() == element->type()) {
+              return idx;
+              }
+          ++idx;
+          }
+      return -1;
       }
 
 //---------------------------------------------------------
@@ -1450,13 +1470,17 @@ void Palette::actionToggled(bool /*val*/)
 //---------------------------------------------------------
 //   globalSelectedElementChanged
 //---------------------------------------------------------
+
 void Palette::globalSelectedElementChanged(Element* e)
       {
       if (selectedIdx >= 0 && element(selectedIdx) != e) {
           update(idxRect(selectedIdx));
-          selectedIdx = -1;
+          selectedIdx = idxOfElement(e, true);
+          if (selectedIdx >= 0) {
+              update(idxRect(selectedIdx));
+              }
+          }
       }
-}
 
 //---------------------------------------------------------
 //   PaletteProperties

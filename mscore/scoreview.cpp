@@ -3674,6 +3674,17 @@ bool ScoreView::mousePress(QMouseEvent* ev)
             if (dragStaffIdx < 0)
                   curElement = 0;
             }
+      if (curElement && elementToAddOnSelection) {
+            QPointF pos(data.startMove);
+
+            DropData dropData;
+            dropData.view       = this;
+            dropData.pos        = pos;
+            dropData.dragOffset = QPointF();
+            dropData.element    = elementToAddOnSelection->clone();
+            dropData.element->setScore(this->score());
+            // TODO: handleDropData(dropData);
+            }
       return curElement != 0;
       }
 

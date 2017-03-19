@@ -13,11 +13,11 @@
 
 #include "palette.h"
 #include "palettebox.h"
-#include "palettegroup.h"
 #include "musescore.h"
 #include "preferences.h"
 #include "libmscore/xml.h"
 #include "workspace.h"
+#include "palettegroup.h"
 
 namespace Ms {
 
@@ -25,10 +25,12 @@ namespace Ms {
 //   PaletteBox
 //---------------------------------------------------------
 
-PaletteBox::PaletteBox(QWidget* parent)
+PaletteBox::PaletteBox(PaletteGroup *targetPaletteGroup, QWidget* parent)
    : QDockWidget(tr("Palettes"), parent)
+   , paletteGroup(targetPaletteGroup)
       {
-      paletteGroup = new PaletteGroup(this);
+      // if no global palette group specified, create a own
+      if (!paletteGroup) { paletteGroup = new PaletteGroup(nullptr); }
 
       setContextMenuPolicy(Qt::ActionsContextMenu);
       setObjectName("palette-box");

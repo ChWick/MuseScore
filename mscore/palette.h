@@ -171,6 +171,7 @@ class Palette : public QWidget {
       void emitChanged()             { emit changed(); }
       void setGrid(int, int);
       Element* element(int idx);
+      int idxOfElement(Element* element, bool compareType);
       void setDrawGrid(bool val)     { _drawGrid = val; }
       bool drawGrid() const          { return _drawGrid; }
       bool read(const QString& path);
