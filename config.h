@@ -18,7 +18,7 @@
 //  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //=============================================================================
 
-#define USE_ALSA
+/* #undef USE_ALSA */
 /* #undef USE_JACK */
 /* #undef USE_PORTAUDIO */
 /* #undef USE_PORTMIDI */
@@ -29,7 +29,7 @@
 
 /* #undef HAS_MIDI */
 #define SCRIPT_INTERFACE
-#define HAS_AUDIOFILE
+/*#define HAS_AUDIOFILE*/
 #define USE_SSE
 
 #define MUSESCORE_NAME_VERSION  "MuseScore 3 (3.0.0 unstable)"

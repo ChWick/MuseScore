@@ -8,7 +8,11 @@ INCLUDEPATH += $$PWD/thirdparty/ogg
 INCLUDEPATH += $$PWD/thirdparty/openssl/include
 
 
-LIBS += -lasound -lsndfile
+android {
+} else {
+    LIBS += -lasound -lsndfile
+}
+
 LIBS += -lz
 
 #include(awl/awl.pri)
@@ -30,3 +34,6 @@ LIBS += -lz
 #include(thirdparty/rtf2html/rtf2html.pri)
 #include(thirdparty/singleapp/singleapp.pri)
 #include(thirdparty/vorbis/vorbis.pri)
+
+HEADERS += \
+    $$PWD/android_fix.h

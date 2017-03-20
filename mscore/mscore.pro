@@ -26,5 +26,8 @@ LIBS += -L$$LIBS_OUT/thirdparty/vorbis -lvorbis
 LIBS += -L$$LIBS_OUT/thirdparty/ogg -logg
 LIBS += -Wl,--end-group
 
-LIBS += -lasound -lsndfile
+android {
+} else {
+    LIBS += -lasound -lsndfile
+}
 LIBS += -lz

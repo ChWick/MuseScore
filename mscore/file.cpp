@@ -1506,6 +1506,7 @@ QString MuseScore::getDrumsetFilename(bool open)
 //   printFile
 //---------------------------------------------------------
 
+#include <QPrinter>
 void MuseScore::printFile()
       {
 #ifndef QT_NO_PRINTER
@@ -1987,6 +1988,7 @@ bool MuseScore::savePdf(Score* cs, const QString& saveName)
 
 bool MuseScore::savePdf(QList<Score*> cs, const QString& saveName)
       {
+#ifndef QT_NO_PRINTER
       if (cs.empty())
             return false;
       Score* firstScore = cs[0];
@@ -2053,6 +2055,7 @@ bool MuseScore::savePdf(QList<Score*> cs, const QString& saveName)
       p.end();
       MScore::pdfPrinting = false;
       MScore::pixelRatio = pr;
+#endif
       return true;
       }
 
