@@ -5359,7 +5359,7 @@ using namespace Ms;
 //   main
 //---------------------------------------------------------
 
-int main(int argc, char* av[])
+int museScoreMain(int argc, char* av[])
       {
 #ifndef NDEBUG
       qSetMessagePattern("%{file}:%{function}: %{message}");

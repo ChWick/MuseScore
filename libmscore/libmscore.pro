@@ -1,5 +1,6 @@
 TEMPLATE = lib
 CONFIG += staticlib
+TARGET=mscore_core
 
 include(../config.pri)
-include(bww2mxml.pri)
+include(libmscore.pri)

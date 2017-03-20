@@ -789,6 +789,7 @@ extern Score::FileError readScore(MasterScore* score, QString name, bool ignoreV
 
 } // namespace Ms
 
+int museScoreMain(int argc, char* av[]);
 extern Ms::Score::FileError importOve(Ms::MasterScore*, const QString& name);
 
 #endif
