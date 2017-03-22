@@ -783,18 +783,16 @@ bool ScoreView::saveFotoAs(bool printMode, const QRectF& r)
 
       double pr = MScore::pixelRatio;
       if (ext == "pdf") {
-            QPrinter printer(QPrinter::HighResolution);
-            mag = printer.logicalDpiX() / DPI;
-            printer.setPaperSize(QSizeF(r.width() * mag, r.height() * mag) , QPrinter::DevicePixel);
-            printer.setCreator("MuseScore Version: " VERSION);
-            printer.setFullPage(true);
-            printer.setColorMode(QPrinter::Color);
-            printer.setDocName(fn);
-            printer.setOutputFileName(fn);
-            if (ext == "pdf")
-                  printer.setOutputFormat(QPrinter::PdfFormat);
-            MScore::pixelRatio = DPI / printer.logicalDpiX();
-            QPainter p(&printer);
+            QPdfWriter pdfWriter(fn);
+            mag = pdfWriter.logicalDpiX() / DPI;
+            pdfWriter.setResolution(preferences.exportPdfDpi);
+            QSizeF size(r.width() * mag, r.height() * mag);
+            QPageSize ps(QPageSize::id(size, QPageSize::Inch));
+            pdfWriter.setPageSize(ps);
+            pdfWriter.setCreator("MuseScore Version: " VERSION);
+            pdfWriter.setTitle(fn);
+            MScore::pixelRatio = DPI / pdfWriter.logicalDpiX();
+            QPainter p(&pdfWriter);
             paintRect(printMode, p, r, mag);
             }
       else if (ext == "svg") {
