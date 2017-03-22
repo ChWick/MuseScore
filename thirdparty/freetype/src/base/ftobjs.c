@@ -4755,7 +4755,7 @@
       return FT_THROW( Invalid_Library_Handle );
 
     library->refcount--;
-    if ( library->refcount > 0 )
+    if ( library->refcount != 0 )
       goto Exit;
 
     memory = library->memory;
