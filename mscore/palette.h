@@ -117,6 +117,7 @@ class Palette : public QWidget {
       QPoint dragStartPosition;
 
       qreal extraMag;
+      bool _drawMargin;
       bool _drawGrid;
       bool _selectable;
       bool _disableDragAndDrop { false };
@@ -176,6 +177,8 @@ class Palette : public QWidget {
       void setGrid(int, int);
       Element* element(int idx);
       int idxOfElement(Element* element, bool compareType);
+      void setDrawMargin(bool val)   { _drawMargin = val; }
+      bool drawMargin(bool val)      { return _drawMargin; }
       void setDrawGrid(bool val)     { _drawGrid = val; }
       bool drawGrid() const          { return _drawGrid; }
       bool read(const QString& path);

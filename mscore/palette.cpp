@@ -89,6 +89,7 @@ Palette::Palette(QWidget* parent)
       selectedIdx   = -1;
       _yOffset      = 0.0;
       setGrid(50, 60);
+      _drawMargin   = true;
       _drawGrid     = false;
       _selectable   = false;
       setMouseTracking(true);
@@ -875,12 +876,19 @@ void Palette::paintEvent(QPaintEvent* /*event*/)
       QColor bgColor(0xf6, 0xf0, 0xda);
       if (preferences.fgUseColor)
             bgColor = preferences.fgColor;
+
+      //
+      // draw margin
+      //
+      if (_drawMargin) {
 #if 1
-      p.setBrush(bgColor);
-      p.drawRoundedRect(0, 0, width(), height(), 2, 2);
+          p.setBrush(bgColor);
+          p.drawRoundedRect(0, 0, width(), height(), 2, 2);
 #else
-      p.fillRect(event->rect(), QColor(0xf6, 0xf0, 0xda));
+          p.fillRect(event->rect(), QColor(0xf6, 0xf0, 0xda));
 #endif
+          }
+
       //
       // draw grid
       //
