@@ -218,6 +218,7 @@ class MuseScoreApplication : public QtSingleApplication {
 class MuseScore : public QMainWindow, public MuseScoreCore {
       Q_OBJECT
 
+protected:
       QSettings settings;
       ScoreView* cv                        { 0 };
       ScoreState _sstate;
